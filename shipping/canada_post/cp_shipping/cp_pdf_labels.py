@@ -1,139 +1,214 @@
+import os
+import sys
+import requests
+import base64
+import json
+from datetime import datetime
+import xml.etree.ElementTree as ET
 
-import os import requests 
-import base64 
-import json from datetime 
-import datetime
+# Add project root to the Python path
+project_root = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(project_root, '..', '..', '..'))
+from common.utils import get_canada_post_credentials
+from .validate_cp_shipment import get_shipment_details, get_tracking_summary
 
---- Configuration ---
-XML_INPUT_DIR = os.path.join(os.path.dirname(file), '..', 'cp_create_labels', 'create_label_xml_files') PDF_OUTPUT_DIR = os.path.join(os.path.dirname(file), 'cp_pdf_shipping_labels') SECRETS_FILE = os.path.join(os.path.dirname(file), '..', '..', '..', 'secrets.txt') CP_SHIPPING_DATA_FILE = os.path.join(os.path.dirname(file), 'cp_shipping_labels_data.json') CUSTOMER_SERVICE_LOG_FILE = os.path.join(os.path.dirname(file), '..', '..', 'customer_service_logs', 'customer_service_shipping_log.json') YOUR_CUSTOMER_NUMBER = "YOUR_CUSTOMER_NUMBER" CP_API_URL = f'https://soa-gw.canadapost.ca/rs/{YOUR_CUSTOMER_NUMBER}/{YOUR_CUSTOMER_NUMBER}/shipment'
+# --- Configuration ---
+LOGS_DIR_BB = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'logs', 'best_buy')
+LOGS_DIR_CP = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'logs', 'canada_post')
+XML_INPUT_DIR = os.path.join(LOGS_DIR_CP, 'create_label_xml_files')
+PDF_OUTPUT_DIR = os.path.join(LOGS_DIR_CP, 'cp_pdf_shipping_labels')
+CP_SHIPPING_DATA_FILE = os.path.join(LOGS_DIR_CP, 'cp_shipping_labels_data.json')
+CP_HISTORY_LOG_FILE = os.path.join(LOGS_DIR_CP, 'cp_shipping_history_log.json')
+CUSTOMER_SERVICE_CP_HISTORY_LOG_FILE = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'logs', 'customer_service', 'cp_shipping_history_log.json')
 
-def get_cp_credentials(): """ Reads the Canada Post API credentials from the secrets.txt file. """ print("INFO: Reading Canada Post credentials from secrets.txt...") user, password = None, None try: with open(SECRETS_FILE, 'r') as f: for line in f: if line.startswith('CANADA_POST_API_USER='): user = line.strip().split('=')[1] elif line.startswith('CANADA_POST_API_PASSWORD='): password = line.strip().split('=')[1] if user and password: print("SUCCESS: Canada Post credentials loaded.") return user, password except FileNotFoundError: print(f"ERROR: secrets.txt not found at {SECRETS_FILE}") return None, None
 
-def log_shipping_data(order_id, tracking_pin, label_url, api_response_text): """ Logs the shipping data to cp_shipping_labels_data.json. """ print(f"INFO: Logging shipping data for order {order_id}...") log_entries = [] if os.path.exists(CP_SHIPPING_DATA_FILE): with open(CP_SHIPPING_DATA_FILE, 'r') as f: try: log_entries = json.load(f) except json.JSONDecodeError: print("WARNING: cp_shipping_labels_data.json is corrupted. Starting fresh.")
+def log_shipping_data(order_id, tracking_pin, label_url, api_response_text):
+    """ Logs the shipping data to cp_shipping_labels_data.json. """
+    os.makedirs(os.path.dirname(CP_SHIPPING_DATA_FILE), exist_ok=True)
+    print(f"INFO: Logging shipping data for order {order_id}...")
+    log_entries = []
+    if os.path.exists(CP_SHIPPING_DATA_FILE):
+        with open(CP_SHIPPING_DATA_FILE, 'r') as f:
+            try:
+                log_entries = json.load(f)
+            except json.JSONDecodeError:
+                print("WARNING: cp_shipping_labels_data.json is corrupted. Starting fresh.")
 
-log_entries.append({
-    "order_id": order_id,
-    "tracking_pin": tracking_pin,
-    "label_url": label_url,
-    "timestamp": datetime.now().isoformat(),
-    "api_response": api_response_text
-})
+    log_entries.append({
+        "order_id": order_id,
+        "tracking_pin": tracking_pin,
+        "label_url": label_url,
+        "timestamp": datetime.now().isoformat(),
+        "api_response": api_response_text
+    })
 
-with open(CP_SHIPPING_DATA_FILE, 'w') as f:
-    json.dump(log_entries, f, indent=4)
-def log_for_customer_service(order_id, customer_name, shipping_address, tracking_pin): """ Logs key shipping details for easy customer service lookup. """ print(f"INFO: Logging to customer service log for order {order_id}...") log_entries = [] if os.path.exists(CUSTOMER_SERVICE_LOG_FILE): with open(CUSTOMER_SERVICE_LOG_FILE, 'r') as f: try: log_entries = json.load(f) except json.JSONDecodeError: pass
+    with open(CP_SHIPPING_DATA_FILE, 'w') as f:
+        json.dump(log_entries, f, indent=4)
 
-log_entries.append({
-    "order_reference": order_id,
-    "customer_name": customer_name,
-    "shipping_address": shipping_address,
-    "tracking_number": tracking_pin,
-    "log_timestamp": datetime.now().isoformat()
-})
+def log_cp_history(shipment_details_xml):
+    """ Appends the full shipment details XML to the history logs. """
+    if not shipment_details_xml:
+        return
 
-with open(CUSTOMER_SERVICE_LOG_FILE, 'w') as f:
-    json.dump(log_entries, f, indent=4)
-def create_shipment_and_get_label(api_user, api_password, xml_content, order): """ Sends the request to Canada Post, logs the data, and returns the label URL. """ order_id = order['order_id'] auth_string = f"{api_user}:{api_password}" auth_b64 = base64.b64encode(auth_string.encode('utf-8')).decode('utf-8')
+    for log_path in [CP_HISTORY_LOG_FILE, CUSTOMER_SERVICE_CP_HISTORY_LOG_FILE]:
+        os.makedirs(os.path.dirname(log_path), exist_ok=True)
+        log_entries = []
+        if os.path.exists(log_path):
+            with open(log_path, 'r') as f:
+                try:
+                    log_entries = json.load(f)
+                except json.JSONDecodeError:
+                    log_entries = []
 
-headers = {
-    'Authorization': f'Basic {auth_b64}',
-    'Content-Type': 'application/vnd.cpc.shipment-v8+xml',
-    'Accept': 'application/vnd.cpc.shipment-v8+xml'
-}
+        log_entries.append({
+            "timestamp": datetime.now().isoformat(),
+            "shipment_details": shipment_details_xml
+        })
 
-print("INFO: Sending request to Canada Post 'Create Shipment' API...")
-try:
-    response = requests.post(CP_API_URL, headers=headers, data=xml_content)
-    response.raise_for_status()
-    response_text = response.text
-    print("SUCCESS: 'Create Shipment' API call was successful.")
+        with open(log_path, 'w') as f:
+            json.dump(log_entries, f, indent=4)
+        print(f"SUCCESS: Appended shipment details to {log_path}")
+
+
+def create_shipment_and_get_label(api_user, api_password, customer_number, xml_content, order):
+    """ Sends the request to Canada Post, logs the data, and returns the label URL. """
+    order_id = order['order_id']
+    auth_string = f"{api_user}:{api_password}"
+    auth_b64 = base64.b64encode(auth_string.encode('utf-8')).decode('utf-8')
     
-    tracking_pin, label_url = None, None
-    if '<tracking-pin>' in response_text:
-        start = response_text.find('<tracking-pin>') + 14
-        end = response_text.find('</tracking-pin>', start)
-        tracking_pin = response_text[start:end]
-    
-    if '<link rel="label"' in response_text:
-        start = response_text.find('href="') + 6
-        end = response_text.find('"', start)
-        label_url = response_text[start:end]
+    cp_api_url = f'https://soa-gw.canadapost.ca/rs/{customer_number}/{customer_number}/shipment'
+
+    headers = {
+        'Authorization': f'Basic {auth_b64}',
+        'Content-Type': 'application/vnd.cpc.shipment-v8+xml',
+        'Accept': 'application/vnd.cpc.shipment-v8+xml'
+    }
+
+    print("INFO: Sending request to Canada Post 'Create Shipment' API...")
+    try:
+        response = requests.post(cp_api_url, headers=headers, data=xml_content)
+        response.raise_for_status()
+        response_text = response.text
+        print("SUCCESS: 'Create Shipment' API call was successful.")
         
-    log_shipping_data(order_id, tracking_pin, label_url, response_text)
-    
-    if tracking_pin:
-        customer = order['customer']
-        shipping = customer['shipping_address']
-        customer_name = f"{shipping['firstname']} {shipping['lastname']}"
-        full_address = f"{shipping['street_1']}, {shipping['city']}, {shipping['state']} {shipping['zip_code']}"
-        log_for_customer_service(order_id, customer_name, full_address, tracking_pin)
+        label_url, details_url, tracking_pin = None, None, None
+        try:
+            root = ET.fromstring(response_text)
+            label_link = root.find(".//{http://www.canadapost.ca/ws/shipment-v8}link[@rel='label']")
+            if label_link is not None:
+                label_url = label_link.get('href')
 
-    return label_url
+            tracking_pin_element = root.find(".//{http://www.canadapost.ca/ws/shipment-v8}tracking-pin")
+            if tracking_pin_element is not None:
+                tracking_pin = tracking_pin_element.text
 
-except requests.exceptions.RequestException as e:
-    print(f"ERROR: 'Create Shipment' API request failed: {e}")
-    if e.response is not None:
-        log_shipping_data(order_id, None, None, e.response.text)
-    return None
-def download_label(label_url, output_path): """ Downloads the shipping label PDF from the provided URL. """ if not label_url: return
+            details_link = root.find(".//{http://www.canadapost.ca/ws/shipment-v8}link[@rel='details']")
+            if details_link is not None:
+                details_url = details_link.get('href')
 
-headers = {
-    'Accept': 'application/pdf'
-}
+        except ET.ParseError as e:
+            print(f"ERROR: Failed to parse 'Create Shipment' response XML: {e}")
 
-print(f"INFO: Downloading label from {label_url}...")
-try:
-    response = requests.get(label_url, headers=headers)
-    response.raise_for_status()
-    
-    with open(output_path, 'wb') as f:
-        f.write(response.content)
+        log_shipping_data(order_id, tracking_pin, label_url, response_text)
+
+        return label_url, details_url, tracking_pin
+
+    except requests.exceptions.RequestException as e:
+        print(f"ERROR: 'Create Shipment' API request failed: {e}")
+        if e.response is not None:
+            print("Response Body:", e.response.text)
+            log_shipping_data(order_id, None, None, e.response.text)
+        return None, None, None
+
+def download_label(label_url, api_user, api_password, output_path):
+    """ Downloads the shipping label PDF from the provided URL. """
+    if not label_url:
+        return
+
+    auth_string = f"{api_user}:{api_password}"
+    auth_b64 = base64.b64encode(auth_string.encode('utf-8')).decode('utf-8')
+
+    headers = {
+        'Accept': 'application/pdf',
+        'Authorization': f'Basic {auth_b64}'
+    }
+
+    print(f"INFO: Downloading label from {label_url}...")
+    try:
+        response = requests.get(label_url, headers=headers)
+        response.raise_for_status()
         
-    print(f"SUCCESS: Saved label to {output_path}")
+        with open(output_path, 'wb') as f:
+            f.write(response.content)
 
-except requests.exceptions.RequestException as e:
-    print(f"ERROR: Failed to download label: {e}")
-def main(): """ Main function to process XML files and get PDF labels. """ print("\n--- Starting Create PDF Labels Script ---")
+        print(f"SUCCESS: Saved label to {output_path}")
 
-os.makedirs(PDF_OUTPUT_DIR, exist_ok=True)
-os.makedirs(os.path.dirname(CUSTOMER_SERVICE_LOG_FILE), exist_ok=True)
+    except requests.exceptions.RequestException as e:
+        print(f"ERROR: Failed to download label: {e}")
 
-api_user, api_password = get_cp_credentials()
-if not api_user or not api_password:
-    return
+def main():
+    """ Main function to process XML files and get PDF labels. """
+    print("\n--- Starting Create PDF Labels Script ---")
+
+    os.makedirs(PDF_OUTPUT_DIR, exist_ok=True)
+
+    api_user, api_password, customer_number, _, _ = get_canada_post_credentials()
+    if not all([api_user, api_password, customer_number]):
+        return
+
+    if not os.path.exists(XML_INPUT_DIR) or not os.listdir(XML_INPUT_DIR):
+        print("INFO: No XML files found to process.")
+        return
+
+    xml_files = [f for f in os.listdir(XML_INPUT_DIR) if f.endswith('.xml')]
     
-xml_files = [f for f in os.listdir(XML_INPUT_DIR) if f.endswith('.xml')]
+    print(f"INFO: Found {len(xml_files)} XML files to process.")
 
-if not xml_files:
-    print("INFO: No XML files found to process.")
-    return
-    
-print(f"INFO: Found {len(xml_files)} XML files to process.")
+    orders_file_path = os.path.join(LOGS_DIR_BB, 'orders_pending_shipping.json')
+    if not os.path.exists(orders_file_path):
+        print(f"ERROR: {orders_file_path} not found.")
+        return
 
-# Load all pending orders to have access to full order details
-with open(os.path.join(os.path.dirname(XML_INPUT_DIR), '..', '..', '..', 'Orders', 'awaiting_shipment', 'orders_awaiting_shipment', 'orders_pending_shipping.json'), 'r') as f:
-    all_orders = json.load(f)
-orders_map = {order['order_id']: order for order in all_orders}
+    with open(orders_file_path, 'r') as f:
+        all_orders = json.load(f)
+    orders_map = {order['order_id']: order for order in all_orders}
 
-for xml_file in xml_files:
-    order_id = os.path.splitext(xml_file)[0]
-    xml_path = os.path.join(XML_INPUT_DIR, xml_file)
-    
-    print(f"\nINFO: Processing {xml_file} for order {order_id}...")
-    
-    with open(xml_path, 'r') as f:
-        xml_content = f.read()
-    
-    order_details = orders_map.get(order_id)
-    if not order_details:
-        print(f"WARNING: Could not find order details for {order_id}. Skipping.")
-        continue
+    for xml_file in xml_files:
+        order_id = os.path.splitext(xml_file)[0]
+        xml_path = os.path.join(XML_INPUT_DIR, xml_file)
+        details_url = None
 
-    label_url = create_shipment_and_get_label(api_user, api_password, xml_content, order_details)
-    
-    if label_url:
-        pdf_path = os.path.join(PDF_OUTPUT_DIR, f"{order_id}.pdf")
-        download_label(label_url, pdf_path)
+        print(f"\nINFO: Processing {xml_file} for order {order_id}...")
         
-print("--- Create PDF Labels Script Finished ---\n")
-if name == 'main': main() 
+        with open(xml_path, 'r') as f:
+            xml_content = f.read()
+
+        order_details = orders_map.get(order_id)
+        if not order_details:
+            print(f"WARNING: Could not find order details for {order_id}. Skipping.")
+            continue
+
+        label_url, details_url, tracking_pin = create_shipment_and_get_label(api_user, api_password, customer_number, xml_content, order_details)
+
+        if details_url:
+            shipment_details_xml = get_shipment_details(api_user, api_password, details_url)
+            if shipment_details_xml:
+                log_cp_history(shipment_details_xml)
+
+        if tracking_pin:
+            import time
+            print("INFO: Waiting for 30 seconds for tracking pin to become active...")
+            time.sleep(30)
+            is_valid_tracking = get_tracking_summary(api_user, api_password, tracking_pin)
+            if not is_valid_tracking:
+                print(f"CRITICAL WARNING: Tracking PIN for order {order_id} could not be validated in real-time. Proceeding with Best Buy update.")
+
+        if label_url:
+            timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+            pdf_path = os.path.join(PDF_OUTPUT_DIR, f"{order_id}_{timestamp}.pdf")
+            download_label(label_url, api_user, api_password, pdf_path)
+
+    print("--- Create PDF Labels Script Finished ---\n")
+
+if __name__ == '__main__':
+    main()

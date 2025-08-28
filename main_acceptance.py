@@ -1,7 +1,7 @@
-import time 
-from Orders.pending_acceptance.orders_pending_acceptance.retieve_pending_acceptance import main as retrieve_main from Orders.pending_acceptance.accept_orders_pending_confirmation.accept_orders 
-import main as accept_main from Orders.pending_acceptance.accept_pending_orders_validation.order_acceptance_validation 
-import validate_acceptance
+import time
+from Orders.pending_acceptance.orders_pending_acceptance.retieve_pending_acceptance import main as retrieve_main
+from Orders.pending_acceptance.accept_orders_pending_confirmation.accept_orders import main as accept_main
+from Orders.pending_acceptance.accept_pending_orders_validation.order_acceptance_validation import validate_acceptance
 
 def main_orchestrator(): """ Orchestrates the entire order acceptance process flow. """ 
 print("=============================================") 
@@ -52,4 +52,6 @@ while retry_count < max_retries:
 print("\n=============================================")
 print("===      Phase 1 Process Has Concluded      ===")
 print("=============================================")
-if name == 'main': main_orchestrator() 
+
+if __name__ == '__main__':
+    main_orchestrator()
