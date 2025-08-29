@@ -7,12 +7,13 @@ This project is currently under development and is being actively worked on to f
 
 ## Project Phases
 
-This project is broken down into four distinct phases, each with its own main orchestrator script:
+This project is broken down into five distinct phases, each with its own main orchestrator script:
 
 1.  **Phase 1: Order Acceptance (`main_acceptance.py`)** - Fetches and accepts new orders from Best Buy.
 2.  **Phase 2: Retrieve for Shipping (`retrieve_pending_shipping.py`)** - Gets orders that are ready for shipment. This is not a standalone phase, but part of the shipping workflow.
 3.  **Phase 3: Create Shipping Labels (`main_shipping.py`)** - Generates XML payloads and creates Canada Post shipping labels.
 4.  **Phase 4: Update Tracking Numbers (`main_tracking.py`)** - Updates Best Buy with the new tracking numbers.
+5.  **Phase 5: Customer Service (`main_customer_service.py`)** - Fetches and aggregates customer messages from Best Buy.
 
 ## 🚀 Getting Started
 
@@ -50,4 +51,7 @@ python3 main_shipping.py
 
 # Phase 4: Update tracking info on Best Buy
 python3 main_tracking.py
+
+# Phase 5: Fetch customer messages
+python3 main_customer_service.py
 ```
