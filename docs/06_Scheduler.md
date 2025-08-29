@@ -11,6 +11,7 @@ In each cycle, it performs the following actions in sequence:
 1.  **Run `main_acceptance.py`:** Checks for and accepts any new orders.
 2.  **Run `main_shipping.py`:** Checks for any orders that are ready for shipment, creates labels for them (if not already created), and validates the new shipments with Canada Post.
 3.  **Run `main_tracking.py`:** Updates Best Buy with the tracking numbers for the newly created shipments and marks them as shipped.
+4.  **Run `main_customer_service.py`:** Fetches new customer messages from the Best Buy API and saves them for processing.
 
 ## How to Run
 
