@@ -20,12 +20,13 @@ Once an order is accepted, it typically moves to a `WAITING_DEBIT_PAYMENT` state
 ### Phase 2: Shipping Label Creation
 
 1.  **Retrieve Shippable Orders:** The scheduler calls the Best Buy API to get a list of all orders currently in the `SHIPPING` state. This state indicates that payment has been cleared and the order is ready to be shipped.
-2.  **Duplicate Check:** For each shippable order, the system checks its internal logs (`logs/canada_post/cp_shipping_history_log.json`) to see if a shipping label has already been created. If it has, the order is skipped to prevent creating duplicate shipments.
-3.  **Transform Data:** For new shippable orders, the order data is transformed into the required XML format for the Canada Post "Create Shipment" API.
-4.  **Create CP Shipment:** The script calls the Canada Post API with the XML payload. This is a **live production call** that uses the `transmit-shipment` flag, meaning it creates a real, billable shipment.
-5.  **Validate Shipment:** After creating the shipment, the script makes a second call to the Canada Post "Get Tracking Summary" API to validate that the new tracking PIN is active and recognized.
-6.  **Download PDF Label:** A 4x6 PDF shipping label is downloaded and saved with a unique timestamped filename (e.g., `{order_id}_{timestamp}.pdf`).
-7.  **Log Shipment Data:** The full details of the Canada Post shipment are saved to history logs.
+2.  **Void Previous Shipment (If Applicable):** For each shippable order, the system first checks if a shipment has been previously created. If so, it calls the Canada Post API to void that shipment. This prevents duplicate, active labels for a single order.
+3.  **Watermark Old Label:** If a previous shipment was voided, the corresponding local PDF file is watermarked with a large "VOIDED" stamp and moved to an archive directory for a clear audit trail.
+4.  **Transform Data:** The order data is transformed into the required XML format for the Canada Post "Create Shipment" API.
+5.  **Create New CP Shipment:** The script calls the Canada Post API with the XML payload. This is a **live production call** that creates a new, billable shipment.
+6.  **Validate Shipment:** After creating the shipment, the script makes a second call to the Canada Post "Get Tracking Summary" API to validate that the new tracking PIN is active and recognized.
+7.  **Download PDF Label:** A 4x6 PDF shipping label is downloaded and saved with a simple, clean filename (`{order_id}.pdf`).
+8.  **Log Shipment Data:** The full details of the new Canada Post shipment, including the void URL for the new shipment, are saved to history logs.
 
 ### Phase 3: Tracking and Status Update
 

@@ -92,9 +92,9 @@ def create_xml_payload(order, contract_id, paid_by_customer):
     dom = minidom.parseString(xml_str)
     return dom.toprettyxml(indent="  ")
 
-def main():
-    """ Main function to read orders and generate XML files. """
-    print("\n--- Starting Transform Shipping Data to XML Script ---")
+def main(order):
+    """ Main function to generate an XML file for a single order. """
+    print(f"\n--- Starting Transform Shipping Data to XML for Order: {order['order_id']} ---")
 
     _, _, _, paid_by_customer, contract_id = get_canada_post_credentials()
     if not all([paid_by_customer, contract_id]):
@@ -102,36 +102,20 @@ def main():
 
     os.makedirs(XML_OUTPUT_DIR, exist_ok=True)
 
-    if not os.path.exists(ORDERS_FILE):
-        print(f"ERROR: {ORDERS_FILE} not found.")
-        return
+    order_id = order['order_id']
+    print(f"INFO: Processing order {order_id}...")
 
-    with open(ORDERS_FILE, 'r') as f:
-        try:
-            orders = json.load(f)
-        except json.JSONDecodeError:
-            print("ERROR: orders_pending_shipping.json is corrupted.")
-            return
-        
-    if not orders:
-        print("INFO: No orders found in orders_pending_shipping.json to process.")
-        return
+    xml_content = create_xml_payload(order, contract_id, paid_by_customer)
 
-    print(f"INFO: Found {len(orders)} orders to process.")
+    xml_filename = os.path.join(XML_OUTPUT_DIR, f"{order_id}.xml")
+    with open(xml_filename, 'w') as xml_file:
+        xml_file.write(xml_content)
+    
+    print(f"SUCCESS: Created XML file: {xml_filename}")
+    print(f"--- Transform Shipping Data to XML for Order: {order['order_id']} Finished ---\n")
 
-    for order in orders:
-        order_id = order['order_id']
-        print(f"INFO: Processing order {order_id}...")
-    
-        xml_content = create_xml_payload(order, contract_id, paid_by_customer)
-    
-        xml_filename = os.path.join(XML_OUTPUT_DIR, f"{order_id}.xml")
-        with open(xml_filename, 'w') as xml_file:
-            xml_file.write(xml_content)
-        
-        print(f"SUCCESS: Created XML file: {xml_filename}")
-    
-    print("--- Transform Shipping Data to XML Script Finished ---\n")
 
 if __name__ == '__main__':
-    main()
+    # This script is not meant to be run directly anymore.
+    # It should be called from main_shipping.py
+    print("This script is designed to be imported and used by other parts of the application.")

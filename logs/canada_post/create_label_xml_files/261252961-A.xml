@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+<shipment xmlns="http://www.canadapost.ca/ws/shipment-v8">
+  <transmit-shipment>true</transmit-shipment>
+  <requested-shipping-point>M2J4N3</requested-shipping-point>
+  <delivery-spec>
+    <service-code>DOM.EP</service-code>
+    <sender>
+      <name>VISIONVATION INC.</name>
+      <company>VISIONVATION INC.</company>
+      <contact-phone>647-444-0848</contact-phone>
+      <address-details>
+        <address-line-1>133 Rock Fern Way</address-line-1>
+        <city>North York</city>
+        <prov-state>ON</prov-state>
+        <country-code>CA</country-code>
+        <postal-zip-code>M2J 4N3</postal-zip-code>
+      </address-details>
+    </sender>
+    <destination>
+      <name>Franklin Che</name>
+      <company>1x P52-32-1000-FP-FL-BL-Mouse</company>
+      <address-details>
+        <address-line-1>54 Fir Tree Lane</address-line-1>
+        <city>Timberlea</city>
+        <prov-state>NS</prov-state>
+        <country-code>CA</country-code>
+        <postal-zip-code>B3T0A4</postal-zip-code>
+      </address-details>
+    </destination>
+    <options>
+      <option>
+        <option-code>DC</option-code>
+      </option>
+    </options>
+    <parcel-characteristics>
+      <weight>1.8</weight>
+      <dimensions>
+        <length>35</length>
+        <width>25</width>
+        <height>5</height>
+      </dimensions>
+    </parcel-characteristics>
+    <print-preferences>
+      <output-format>4x6</output-format>
+    </print-preferences>
+    <preferences>
+      <show-packing-instructions>true</show-packing-instructions>
+      <show-postage-rate>false</show-postage-rate>
+      <show-insured-value>true</show-insured-value>
+    </preferences>
+    <references>
+      <customer-ref-1>261252961-A</customer-ref-1>
+    </references>
+    <settlement-info>
+      <paid-by-customer>0001030338</paid-by-customer>
+      <contract-id>0043924574</contract-id>
+      <intended-method-of-payment>Account</intended-method-of-payment>
+    </settlement-info>
+  </delivery-spec>
+</shipment>

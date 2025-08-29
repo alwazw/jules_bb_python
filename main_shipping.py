@@ -8,7 +8,8 @@ sys.path.insert(0, project_root)
 
 from Orders.awaiting_shipment.orders_awaiting_shipment.retrieve_pending_shipping import main as retrieve_shipping_main
 from shipping.canada_post.cp_create_labels.cp_transform_shipping_data import main as transform_data_main
-from shipping.canada_post.cp_shipping.cp_pdf_labels import main as create_labels_main
+from shipping.canada_post.cp_shipping.cp_pdf_labels import main as create_labels_main, void_shipment
+from common.utils import get_canada_post_credentials
 
 LOGS_DIR_CP = os.path.join(os.path.dirname(__file__), 'logs', 'canada_post')
 CP_HISTORY_LOG_FILE = os.path.join(LOGS_DIR_CP, 'cp_shipping_history_log.json')
@@ -16,31 +17,20 @@ LOGS_DIR_BB = os.path.join(os.path.dirname(__file__), 'logs', 'best_buy')
 PENDING_SHIPPING_FILE = os.path.join(LOGS_DIR_BB, 'orders_pending_shipping.json')
 
 
-def has_label_been_created(order_id):
-    """ Checks if a shipping label has already been created for a given order ID. """
-    if not os.path.exists(CP_HISTORY_LOG_FILE):
-        return False
-
-    with open(CP_HISTORY_LOG_FILE, 'r') as f:
-        try:
-            history = json.load(f)
-            for entry in history:
-                # This assumes the order ID is present in the logged shipment details XML.
-                # A more robust check might parse the XML to be certain.
-                if order_id in entry.get("shipment_details", ""):
-                    return True
-        except (json.JSONDecodeError, TypeError):
-            return False
-    return False
-
 def process_shippable_orders():
     """
-    Orchestrates the entire shipping label creation process for orders
-    that are ready for shipment and have not been processed before.
+    Orchestrates the entire shipping label creation process.
+    If a label already exists for an order, it is voided before a new one is created.
     """
     print("=============================================")
     print("===      Running Shipping Workflow        ===")
     print("=============================================")
+
+    # Get CP credentials once
+    api_user, api_password, _, _, _ = get_canada_post_credentials()
+    if not all([api_user, api_password]):
+        print("ERROR: Could not retrieve Canada Post credentials. Aborting.")
+        return
 
     # First, get the latest list of shippable orders from Best Buy
     retrieve_shipping_main()
@@ -61,25 +51,21 @@ def process_shippable_orders():
         print("INFO: No orders awaiting shipment.")
         return
 
-    # Filter out orders that already have a label
-    unprocessed_orders = [order for order in orders_to_ship if not has_label_been_created(order['order_id'])]
+    print(f"INFO: Found {len(orders_to_ship)} shippable orders to process.")
 
-    if not unprocessed_orders:
-        print("INFO: All shippable orders have already been processed.")
-        return
+    for order in orders_to_ship:
+        order_id = order['order_id']
+        print(f"\n--- Processing Order: {order_id} ---")
 
-    print(f"INFO: Found {len(unprocessed_orders)} new shippable orders to process.")
+        # 1. Void any existing shipment for this order
+        # This will also watermark and move the old PDF if it exists
+        void_shipment(order_id, api_user, api_password)
 
-    # Temporarily overwrite the pending shipping file with only the unprocessed orders
-    with open(PENDING_SHIPPING_FILE, 'w') as f:
-        json.dump(unprocessed_orders, f, indent=4)
+        # 2. Transform data and create XML for the new shipment
+        transform_data_main(order)
 
-    # Now run the rest of the workflow on the filtered list
-    print("\n>>> Transforming data for Canada Post...")
-    transform_data_main()
-
-    print("\n>>> Creating shipping labels...")
-    create_labels_main()
+        # 3. Create the new shipping label
+        create_labels_main(order_id, order)
 
     print("\n=============================================")
     print("===   Shipping Workflow Has Concluded     ===")

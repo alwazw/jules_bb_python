@@ -1,0 +1,1079 @@
+[
+    {
+        "acceptance_decision_date": "2025-08-29T03:07:31Z",
+        "can_cancel": false,
+        "can_shop_ship": true,
+        "channel": null,
+        "commercial_id": "261250893",
+        "created_date": "2025-08-29T01:11:48Z",
+        "currency_iso_code": "CAD",
+        "customer": {
+            "billing_address": {
+                "city": "Mississauga",
+                "civility": "",
+                "company": "",
+                "company_2": null,
+                "country": "Canada",
+                "country_iso_code": null,
+                "firstname": "Geordy",
+                "lastname": "Decena",
+                "phone": "647-636-7240",
+                "phone_secondary": "",
+                "state": "ON",
+                "street_1": "5881 Cabrera Cres",
+                "street_2": "",
+                "zip_code": "L5V3B2"
+            },
+            "civility": "",
+            "customer_id": "5A3962F0-9CC6-4538-9C3F-FAA0D64202A6",
+            "firstname": "Geordy",
+            "lastname": "Decena",
+            "locale": "en_US",
+            "shipping_address": {
+                "additional_info": "",
+                "city": "Mississauga",
+                "civility": "",
+                "company": "",
+                "company_2": null,
+                "country": "Canada",
+                "country_iso_code": null,
+                "firstname": "Geordy",
+                "lastname": "Decena",
+                "phone": "647-636-7240",
+                "phone_secondary": "",
+                "state": "ON",
+                "street_1": "5881 Cabrera Cres",
+                "street_2": "",
+                "zip_code": "L5V3B2"
+            }
+        },
+        "customer_debited_date": "2025-08-29T03:17:16.674Z",
+        "customer_directly_pays_seller": false,
+        "customer_notification_email": "rbje8rya7ko.f1d31jcq9@us.notification.mirakl.net",
+        "delivery_date": {
+            "earliest": "2025-09-09T06:59:59.999Z",
+            "latest": "2025-09-20T06:59:59.999Z"
+        },
+        "fulfillment": {
+            "center": {
+                "code": "DEFAULT"
+            }
+        },
+        "fully_refunded": false,
+        "has_customer_message": false,
+        "has_incident": false,
+        "has_invoice": false,
+        "last_updated_date": "2025-08-29T03:17:16Z",
+        "leadtime_to_ship": 8,
+        "order_additional_fields": [],
+        "order_id": "261250893-A",
+        "order_lines": [
+            {
+                "can_refund": true,
+                "cancelations": [],
+                "category_code": "CAT_1002",
+                "category_label": "Laptops",
+                "commission_fee": 56.0,
+                "commission_rate_vat": 13.0,
+                "commission_taxes": [
+                    {
+                        "amount": 7.28,
+                        "code": "ON_HST",
+                        "rate": 13.0
+                    }
+                ],
+                "commission_vat": 7.28,
+                "created_date": "2025-08-29T01:11:48Z",
+                "debited_date": "2025-08-29T03:17:16Z",
+                "description": null,
+                "fees": [],
+                "last_updated_date": "2025-08-29T03:17:16Z",
+                "offer_id": 198886222,
+                "offer_sku": "P52-32-512-FP-FL-BL-Mouse",
+                "offer_state_code": "11",
+                "order_line_additional_fields": [
+                    {
+                        "code": "language",
+                        "type": "STRING",
+                        "value": "EN"
+                    }
+                ],
+                "order_line_id": "113381082",
+                "order_line_index": 1,
+                "order_line_state": "SHIPPING",
+                "order_line_state_reason_code": null,
+                "order_line_state_reason_label": null,
+                "price": 699.99,
+                "price_additional_info": null,
+                "price_amount_breakdown": {
+                    "parts": [
+                        {
+                            "amount": 699.99,
+                            "commissionable": true,
+                            "debitable_from_customer": true,
+                            "payable_to_shop": true
+                        }
+                    ]
+                },
+                "price_unit": 699.99,
+                "product_medias": [
+                    {
+                        "media_url": "/media/product/image/7c9d492b-0bc3-499b-8c30-61c3d76d3f4d",
+                        "mime_type": "JPG",
+                        "type": "LARGE"
+                    },
+                    {
+                        "media_url": "/media/product/image/b0cf899b-26d3-48e5-9d04-0312534a6b5c",
+                        "mime_type": "JPG",
+                        "type": "MEDIUM"
+                    },
+                    {
+                        "media_url": "/media/product/image/e949f12a-9212-4558-ab85-1f6ee88e5251",
+                        "mime_type": "JPG",
+                        "type": "SMALL"
+                    }
+                ],
+                "product_shop_sku": "P52-32-512-FP-FL-BL-Mouse",
+                "product_sku": "19433693",
+                "product_title": "Refurbished (Excellent), Lenovo ThinkPad P52, 15.6\" 1080p FHD, Fast Intel i7-8850H, 32GB RAM, Autodesk\u2122 Certified Nvidia Quadro P1000 GPU, Highspeed 512GB SSD, Webcam/Mic, Mouse",
+                "promotions": [],
+                "quantity": 1,
+                "received_date": null,
+                "refunds": [],
+                "shipped_date": null,
+                "shipping_from": {
+                    "address": {
+                        "city": "North York",
+                        "country_iso_code": "CAN",
+                        "state": "ON",
+                        "street_1": "133 Rock Feen Way",
+                        "street_2": null,
+                        "zip_code": "M2J 4N3"
+                    },
+                    "warehouse": {
+                        "code": "0001"
+                    }
+                },
+                "shipping_price": 0.0,
+                "shipping_price_additional_unit": null,
+                "shipping_price_amount_breakdown": {
+                    "parts": [
+                        {
+                            "amount": 0.0,
+                            "commissionable": true,
+                            "debitable_from_customer": true,
+                            "payable_to_shop": true
+                        }
+                    ]
+                },
+                "shipping_price_unit": null,
+                "shipping_taxes": [
+                    {
+                        "amount": 0.0,
+                        "amount_breakdown": {
+                            "parts": [
+                                {
+                                    "amount": 0.0,
+                                    "commissionable": false,
+                                    "debitable_from_customer": true,
+                                    "payable_to_shop": true
+                                }
+                            ]
+                        },
+                        "code": "GST",
+                        "tax_calculation_rule": "NONE"
+                    },
+                    {
+                        "amount": 0.0,
+                        "amount_breakdown": {
+                            "parts": [
+                                {
+                                    "amount": 0.0,
+                                    "commissionable": false,
+                                    "debitable_from_customer": true,
+                                    "payable_to_shop": true
+                                }
+                            ]
+                        },
+                        "code": "HST",
+                        "tax_calculation_rule": "NONE"
+                    }
+                ],
+                "taxes": [
+                    {
+                        "amount": 0.0,
+                        "amount_breakdown": {
+                            "parts": [
+                                {
+                                    "amount": 0.0,
+                                    "commissionable": false,
+                                    "debitable_from_customer": true,
+                                    "payable_to_shop": true
+                                }
+                            ]
+                        },
+                        "code": "GST",
+                        "tax_calculation_rule": "NONE"
+                    },
+                    {
+                        "amount": 91.0,
+                        "amount_breakdown": {
+                            "parts": [
+                                {
+                                    "amount": 91.0,
+                                    "commissionable": false,
+                                    "debitable_from_customer": true,
+                                    "payable_to_shop": true
+                                }
+                            ]
+                        },
+                        "code": "HST",
+                        "tax_calculation_rule": "NONE"
+                    }
+                ],
+                "total_commission": 63.28,
+                "total_price": 699.99
+            }
+        ],
+        "order_refunds": null,
+        "order_state": "SHIPPING",
+        "order_state_reason_code": null,
+        "order_state_reason_label": null,
+        "order_tax_mode": "TAX_EXCLUDED",
+        "order_taxes": null,
+        "paymentType": "",
+        "payment_type": "",
+        "payment_workflow": "PAY_ON_ACCEPTANCE",
+        "price": 699.99,
+        "promotions": {
+            "applied_promotions": [],
+            "total_deduced_amount": 0
+        },
+        "quote_id": null,
+        "references": {
+            "order_reference_for_customer": "ON"
+        },
+        "shipping_carrier_code": null,
+        "shipping_carrier_standard_code": null,
+        "shipping_company": null,
+        "shipping_deadline": "2025-09-06T06:59:59.999Z",
+        "shipping_price": 0.0,
+        "shipping_pudo_id": null,
+        "shipping_tracking": null,
+        "shipping_tracking_url": null,
+        "shipping_type_code": "M",
+        "shipping_type_label": "Ground Regular",
+        "shipping_type_standard_code": "CU_ADD-STD",
+        "shipping_zone_code": "ONLocal",
+        "shipping_zone_label": "Ontario Local",
+        "total_commission": 63.28,
+        "total_price": 699.99
+    },
+    {
+        "acceptance_decision_date": "2025-08-29T03:07:25Z",
+        "can_cancel": false,
+        "can_shop_ship": true,
+        "channel": null,
+        "commercial_id": "261252961",
+        "created_date": "2025-08-29T03:06:33Z",
+        "currency_iso_code": "CAD",
+        "customer": {
+            "billing_address": {
+                "city": "Timberlea",
+                "civility": "",
+                "company": "",
+                "company_2": null,
+                "country": "Canada",
+                "country_iso_code": null,
+                "firstname": "Franklin",
+                "lastname": "Che",
+                "phone": "902-789-8930",
+                "phone_secondary": "",
+                "state": "NS",
+                "street_1": "54 Fir Tree Lane",
+                "street_2": "",
+                "zip_code": "B3T0A4"
+            },
+            "civility": "",
+            "customer_id": "BF013F80-46F4-494A-B8B6-69C754BE15F0",
+            "firstname": "Franklin",
+            "lastname": "Che",
+            "locale": "en_US",
+            "shipping_address": {
+                "additional_info": "",
+                "city": "Timberlea",
+                "civility": "",
+                "company": "",
+                "company_2": null,
+                "country": "Canada",
+                "country_iso_code": null,
+                "firstname": "Franklin",
+                "lastname": "Che",
+                "phone": "902-789-8930",
+                "phone_secondary": "",
+                "state": "NS",
+                "street_1": "54 Fir Tree Lane",
+                "street_2": "",
+                "zip_code": "B3T0A4"
+            }
+        },
+        "customer_debited_date": "2025-08-29T03:16:51.476Z",
+        "customer_directly_pays_seller": false,
+        "customer_notification_email": "ro9lyppmyr9.f1d31jcq9@us.notification.mirakl.net",
+        "delivery_date": null,
+        "fulfillment": {
+            "center": {
+                "code": "DEFAULT"
+            }
+        },
+        "fully_refunded": false,
+        "has_customer_message": false,
+        "has_incident": false,
+        "has_invoice": false,
+        "last_updated_date": "2025-08-29T03:16:51Z",
+        "leadtime_to_ship": 8,
+        "order_additional_fields": [],
+        "order_id": "261252961-A",
+        "order_lines": [
+            {
+                "can_refund": true,
+                "cancelations": [],
+                "category_code": "CAT_1002",
+                "category_label": "Laptops",
+                "commission_fee": 58.0,
+                "commission_rate_vat": 13.0,
+                "commission_taxes": [
+                    {
+                        "amount": 7.54,
+                        "code": "ON_HST",
+                        "rate": 13.0
+                    }
+                ],
+                "commission_vat": 7.54,
+                "created_date": "2025-08-29T03:06:33Z",
+                "debited_date": "2025-08-29T03:16:51Z",
+                "description": null,
+                "fees": [],
+                "last_updated_date": "2025-08-29T03:16:51Z",
+                "offer_id": 198886223,
+                "offer_sku": "P52-32-1000-FP-FL-BL-Mouse",
+                "offer_state_code": "11",
+                "order_line_additional_fields": [
+                    {
+                        "code": "language",
+                        "type": "STRING",
+                        "value": "EN"
+                    }
+                ],
+                "order_line_id": "113383185",
+                "order_line_index": 1,
+                "order_line_state": "SHIPPING",
+                "order_line_state_reason_code": null,
+                "order_line_state_reason_label": null,
+                "price": 724.99,
+                "price_additional_info": null,
+                "price_amount_breakdown": {
+                    "parts": [
+                        {
+                            "amount": 724.99,
+                            "commissionable": true,
+                            "debitable_from_customer": true,
+                            "payable_to_shop": true
+                        }
+                    ]
+                },
+                "price_unit": 724.99,
+                "product_medias": [
+                    {
+                        "media_url": "/media/product/image/56f9f63e-62d8-49a0-abfe-d956d50f558d",
+                        "mime_type": "JPG",
+                        "type": "SMALL"
+                    },
+                    {
+                        "media_url": "/media/product/image/9c2a3b40-8bf2-4b83-805a-cbf200cc2e9f",
+                        "mime_type": "JPG",
+                        "type": "MEDIUM"
+                    },
+                    {
+                        "media_url": "/media/product/image/ee1a9a1b-5475-47d7-bd6c-22d90fa3bd75",
+                        "mime_type": "JPG",
+                        "type": "LARGE"
+                    }
+                ],
+                "product_shop_sku": "P52-32-1000-FP-FL-BL-Mouse",
+                "product_sku": "19433682",
+                "product_title": "Refurbished (Excellent), Lenovo ThinkPad P52, 15.6\" 1080p FHD, Fast Intel i7-8850H, 32GB RAM, Autodesk\u2122 Certified Nvidia Quadro P1000 GPU, Highspeed 1TB SSD, Webcam/Mic, Mouse",
+                "promotions": [],
+                "quantity": 1,
+                "received_date": null,
+                "refunds": [],
+                "shipped_date": null,
+                "shipping_from": {
+                    "address": {
+                        "city": "North York",
+                        "country_iso_code": "CAN",
+                        "state": "ON",
+                        "street_1": "133 Rock Feen Way",
+                        "street_2": null,
+                        "zip_code": "M2J 4N3"
+                    },
+                    "warehouse": {
+                        "code": "0001"
+                    }
+                },
+                "shipping_price": 0.0,
+                "shipping_price_additional_unit": null,
+                "shipping_price_amount_breakdown": {
+                    "parts": [
+                        {
+                            "amount": 0.0,
+                            "commissionable": true,
+                            "debitable_from_customer": true,
+                            "payable_to_shop": true
+                        }
+                    ]
+                },
+                "shipping_price_unit": null,
+                "shipping_taxes": [
+                    {
+                        "amount": 0.0,
+                        "amount_breakdown": {
+                            "parts": [
+                                {
+                                    "amount": 0.0,
+                                    "commissionable": false,
+                                    "debitable_from_customer": true,
+                                    "payable_to_shop": true
+                                }
+                            ]
+                        },
+                        "code": "GST",
+                        "tax_calculation_rule": "NONE"
+                    },
+                    {
+                        "amount": 0.0,
+                        "amount_breakdown": {
+                            "parts": [
+                                {
+                                    "amount": 0.0,
+                                    "commissionable": false,
+                                    "debitable_from_customer": true,
+                                    "payable_to_shop": true
+                                }
+                            ]
+                        },
+                        "code": "HST",
+                        "tax_calculation_rule": "NONE"
+                    }
+                ],
+                "taxes": [
+                    {
+                        "amount": 0.0,
+                        "amount_breakdown": {
+                            "parts": [
+                                {
+                                    "amount": 0.0,
+                                    "commissionable": false,
+                                    "debitable_from_customer": true,
+                                    "payable_to_shop": true
+                                }
+                            ]
+                        },
+                        "code": "GST",
+                        "tax_calculation_rule": "NONE"
+                    },
+                    {
+                        "amount": 101.5,
+                        "amount_breakdown": {
+                            "parts": [
+                                {
+                                    "amount": 101.5,
+                                    "commissionable": false,
+                                    "debitable_from_customer": true,
+                                    "payable_to_shop": true
+                                }
+                            ]
+                        },
+                        "code": "HST",
+                        "tax_calculation_rule": "NONE"
+                    }
+                ],
+                "total_commission": 65.54,
+                "total_price": 724.99
+            }
+        ],
+        "order_refunds": null,
+        "order_state": "SHIPPING",
+        "order_state_reason_code": null,
+        "order_state_reason_label": null,
+        "order_tax_mode": "TAX_EXCLUDED",
+        "order_taxes": null,
+        "paymentType": "",
+        "payment_type": "",
+        "payment_workflow": "PAY_ON_ACCEPTANCE",
+        "price": 724.99,
+        "promotions": {
+            "applied_promotions": [],
+            "total_deduced_amount": 0
+        },
+        "quote_id": null,
+        "references": {
+            "order_reference_for_customer": "NS"
+        },
+        "shipping_carrier_code": null,
+        "shipping_carrier_standard_code": null,
+        "shipping_company": null,
+        "shipping_deadline": "2025-09-06T06:59:59.999Z",
+        "shipping_price": 0.0,
+        "shipping_pudo_id": null,
+        "shipping_tracking": null,
+        "shipping_tracking_url": null,
+        "shipping_type_code": "M",
+        "shipping_type_label": "Ground Regular",
+        "shipping_type_standard_code": "CU_ADD-STD",
+        "shipping_zone_code": "MRLocal",
+        "shipping_zone_label": "Maritime Local",
+        "total_commission": 65.54,
+        "total_price": 724.99
+    },
+    {
+        "acceptance_decision_date": "2025-08-29T16:53:28Z",
+        "can_cancel": false,
+        "can_shop_ship": true,
+        "channel": null,
+        "commercial_id": "261258772",
+        "created_date": "2025-08-29T15:57:26Z",
+        "currency_iso_code": "CAD",
+        "customer": {
+            "billing_address": {
+                "city": "Thunder Bay",
+                "civility": "",
+                "company": "",
+                "company_2": null,
+                "country": "Canada",
+                "country_iso_code": null,
+                "firstname": "Jay",
+                "lastname": "Vandermark",
+                "phone": "807-355-9339",
+                "phone_secondary": "",
+                "state": "ON",
+                "street_1": "330 Van Norman St",
+                "street_2": "",
+                "zip_code": "P7A4B9"
+            },
+            "civility": "",
+            "customer_id": "D3BD26E6-40F3-4FC7-B64F-8BACC559C782",
+            "firstname": "Jillian",
+            "lastname": "Vandermark",
+            "locale": "en_CA",
+            "shipping_address": {
+                "additional_info": "",
+                "city": "Thunder Bay",
+                "civility": "",
+                "company": "",
+                "company_2": null,
+                "country": "Canada",
+                "country_iso_code": null,
+                "firstname": "Jay",
+                "lastname": "Vandermark",
+                "phone": "807-355-9339",
+                "phone_secondary": "",
+                "state": "ON",
+                "street_1": "330 Van Norman St",
+                "street_2": "",
+                "zip_code": "P7A4B9"
+            }
+        },
+        "customer_debited_date": "2025-08-29T17:02:00.256Z",
+        "customer_directly_pays_seller": false,
+        "customer_notification_email": "rf2fajzv75b.f1d31jcq9@us.notification.mirakl.net",
+        "delivery_date": {
+            "earliest": "2025-09-09T06:59:59.999Z",
+            "latest": "2025-09-20T06:59:59.999Z"
+        },
+        "fulfillment": {
+            "center": {
+                "code": "DEFAULT"
+            }
+        },
+        "fully_refunded": false,
+        "has_customer_message": true,
+        "has_incident": false,
+        "has_invoice": false,
+        "last_updated_date": "2025-08-29T17:02:00Z",
+        "leadtime_to_ship": 7,
+        "order_additional_fields": [],
+        "order_id": "261258772-A",
+        "order_lines": [
+            {
+                "can_refund": true,
+                "cancelations": [],
+                "category_code": "CAT_1002",
+                "category_label": "Laptops",
+                "commission_fee": 58.0,
+                "commission_rate_vat": 13.0,
+                "commission_taxes": [
+                    {
+                        "amount": 7.54,
+                        "code": "ON_HST",
+                        "rate": 13.0
+                    }
+                ],
+                "commission_vat": 7.54,
+                "created_date": "2025-08-29T15:57:26Z",
+                "debited_date": "2025-08-29T17:02:00Z",
+                "description": null,
+                "fees": [],
+                "last_updated_date": "2025-08-29T17:02:00Z",
+                "offer_id": 198886223,
+                "offer_sku": "P52-32-1000-FP-FL-BL-Mouse",
+                "offer_state_code": "11",
+                "order_line_additional_fields": [
+                    {
+                        "code": "language",
+                        "type": "STRING",
+                        "value": "EN"
+                    }
+                ],
+                "order_line_id": "113388644",
+                "order_line_index": 1,
+                "order_line_state": "SHIPPING",
+                "order_line_state_reason_code": null,
+                "order_line_state_reason_label": null,
+                "price": 724.99,
+                "price_additional_info": null,
+                "price_amount_breakdown": {
+                    "parts": [
+                        {
+                            "amount": 724.99,
+                            "commissionable": true,
+                            "debitable_from_customer": true,
+                            "payable_to_shop": true
+                        }
+                    ]
+                },
+                "price_unit": 724.99,
+                "product_medias": [
+                    {
+                        "media_url": "/media/product/image/56f9f63e-62d8-49a0-abfe-d956d50f558d",
+                        "mime_type": "JPG",
+                        "type": "SMALL"
+                    },
+                    {
+                        "media_url": "/media/product/image/9c2a3b40-8bf2-4b83-805a-cbf200cc2e9f",
+                        "mime_type": "JPG",
+                        "type": "MEDIUM"
+                    },
+                    {
+                        "media_url": "/media/product/image/ee1a9a1b-5475-47d7-bd6c-22d90fa3bd75",
+                        "mime_type": "JPG",
+                        "type": "LARGE"
+                    }
+                ],
+                "product_shop_sku": "P52-32-1000-FP-FL-BL-Mouse",
+                "product_sku": "19433682",
+                "product_title": "Refurbished (Excellent), Lenovo ThinkPad P52, 15.6\" 1080p FHD, Fast Intel i7-8850H, 32GB RAM, Autodesk\u2122 Certified Nvidia Quadro P1000 GPU, Highspeed 1TB SSD, Webcam/Mic, Mouse",
+                "promotions": [],
+                "quantity": 1,
+                "received_date": null,
+                "refunds": [],
+                "shipped_date": null,
+                "shipping_from": {
+                    "address": {
+                        "city": "North York",
+                        "country_iso_code": "CAN",
+                        "state": "ON",
+                        "street_1": "133 Rock Feen Way",
+                        "street_2": null,
+                        "zip_code": "M2J 4N3"
+                    },
+                    "warehouse": {
+                        "code": "0001"
+                    }
+                },
+                "shipping_price": 0.0,
+                "shipping_price_additional_unit": null,
+                "shipping_price_amount_breakdown": {
+                    "parts": [
+                        {
+                            "amount": 0.0,
+                            "commissionable": true,
+                            "debitable_from_customer": true,
+                            "payable_to_shop": true
+                        }
+                    ]
+                },
+                "shipping_price_unit": null,
+                "shipping_taxes": [
+                    {
+                        "amount": 0.0,
+                        "amount_breakdown": {
+                            "parts": [
+                                {
+                                    "amount": 0.0,
+                                    "commissionable": false,
+                                    "debitable_from_customer": true,
+                                    "payable_to_shop": true
+                                }
+                            ]
+                        },
+                        "code": "GST",
+                        "tax_calculation_rule": "NONE"
+                    },
+                    {
+                        "amount": 0.0,
+                        "amount_breakdown": {
+                            "parts": [
+                                {
+                                    "amount": 0.0,
+                                    "commissionable": false,
+                                    "debitable_from_customer": true,
+                                    "payable_to_shop": true
+                                }
+                            ]
+                        },
+                        "code": "HST",
+                        "tax_calculation_rule": "NONE"
+                    }
+                ],
+                "taxes": [
+                    {
+                        "amount": 0.0,
+                        "amount_breakdown": {
+                            "parts": [
+                                {
+                                    "amount": 0.0,
+                                    "commissionable": false,
+                                    "debitable_from_customer": true,
+                                    "payable_to_shop": true
+                                }
+                            ]
+                        },
+                        "code": "GST",
+                        "tax_calculation_rule": "NONE"
+                    },
+                    {
+                        "amount": 94.25,
+                        "amount_breakdown": {
+                            "parts": [
+                                {
+                                    "amount": 94.25,
+                                    "commissionable": false,
+                                    "debitable_from_customer": true,
+                                    "payable_to_shop": true
+                                }
+                            ]
+                        },
+                        "code": "HST",
+                        "tax_calculation_rule": "NONE"
+                    }
+                ],
+                "total_commission": 65.54,
+                "total_price": 724.99
+            }
+        ],
+        "order_refunds": null,
+        "order_state": "SHIPPING",
+        "order_state_reason_code": null,
+        "order_state_reason_label": null,
+        "order_tax_mode": "TAX_EXCLUDED",
+        "order_taxes": null,
+        "paymentType": "",
+        "payment_type": "",
+        "payment_workflow": "PAY_ON_ACCEPTANCE",
+        "price": 724.99,
+        "promotions": {
+            "applied_promotions": [],
+            "total_deduced_amount": 0
+        },
+        "quote_id": null,
+        "references": {
+            "order_reference_for_customer": "ON"
+        },
+        "shipping_carrier_code": null,
+        "shipping_carrier_standard_code": null,
+        "shipping_company": null,
+        "shipping_deadline": "2025-09-06T06:59:59.999Z",
+        "shipping_price": 0.0,
+        "shipping_pudo_id": null,
+        "shipping_tracking": null,
+        "shipping_tracking_url": null,
+        "shipping_type_code": "M",
+        "shipping_type_label": "Ground Regular",
+        "shipping_type_standard_code": "CU_ADD-STD",
+        "shipping_zone_code": "ONLocal",
+        "shipping_zone_label": "Ontario Local",
+        "total_commission": 65.54,
+        "total_price": 724.99
+    },
+    {
+        "acceptance_decision_date": "2025-08-29T17:57:28Z",
+        "can_cancel": false,
+        "can_shop_ship": true,
+        "channel": null,
+        "commercial_id": "261260643",
+        "created_date": "2025-08-29T17:36:46Z",
+        "currency_iso_code": "CAD",
+        "customer": {
+            "billing_address": {
+                "city": "Ottawa",
+                "civility": "",
+                "company": "",
+                "company_2": null,
+                "country": "Canada",
+                "country_iso_code": null,
+                "firstname": "Marika",
+                "lastname": "Csizmadi",
+                "phone": "382-342-0626",
+                "phone_secondary": "",
+                "state": "ON",
+                "street_1": "3-527 Laderoute Ave",
+                "street_2": "",
+                "zip_code": "K1Z5V9"
+            },
+            "civility": "",
+            "customer_id": "AE1AFDBF-AD7D-44BB-90BD-F7FEAB3E8793",
+            "firstname": "Marika",
+            "lastname": "Csizmadi",
+            "locale": "en_US",
+            "shipping_address": {
+                "additional_info": "",
+                "city": "Ottawa",
+                "civility": "",
+                "company": "",
+                "company_2": null,
+                "country": "Canada",
+                "country_iso_code": null,
+                "firstname": "Marika",
+                "lastname": "Csizmadi",
+                "phone": "382-342-0626",
+                "phone_secondary": "",
+                "state": "ON",
+                "street_1": "3-527 Laderoute Ave",
+                "street_2": "",
+                "zip_code": "K1Z5V9"
+            }
+        },
+        "customer_debited_date": "2025-08-29T18:06:49.629Z",
+        "customer_directly_pays_seller": false,
+        "customer_notification_email": "rg7ckti4d46.f1d31jcq9@us.notification.mirakl.net",
+        "delivery_date": {
+            "earliest": "2025-09-09T06:59:59.999Z",
+            "latest": "2025-09-20T06:59:59.999Z"
+        },
+        "fulfillment": {
+            "center": {
+                "code": "DEFAULT"
+            }
+        },
+        "fully_refunded": false,
+        "has_customer_message": false,
+        "has_incident": false,
+        "has_invoice": false,
+        "last_updated_date": "2025-08-29T18:06:49Z",
+        "leadtime_to_ship": 7,
+        "order_additional_fields": [],
+        "order_id": "261260643-A",
+        "order_lines": [
+            {
+                "can_refund": true,
+                "cancelations": [],
+                "category_code": "CAT_1002",
+                "category_label": "Laptops",
+                "commission_fee": 9.2,
+                "commission_rate_vat": 13.0,
+                "commission_taxes": [
+                    {
+                        "amount": 1.2,
+                        "code": "ON_HST",
+                        "rate": 13.0
+                    }
+                ],
+                "commission_vat": 1.2,
+                "created_date": "2025-08-29T17:36:46Z",
+                "debited_date": "2025-08-29T18:06:49Z",
+                "description": null,
+                "fees": [],
+                "last_updated_date": "2025-08-29T18:06:49Z",
+                "offer_id": 199371183,
+                "offer_sku": "HP-Chrome-Backpack",
+                "offer_state_code": "11",
+                "order_line_additional_fields": [
+                    {
+                        "code": "language",
+                        "type": "STRING",
+                        "value": "EN"
+                    }
+                ],
+                "order_line_id": "113390615",
+                "order_line_index": 1,
+                "order_line_state": "SHIPPING",
+                "order_line_state_reason_code": null,
+                "order_line_state_reason_label": null,
+                "price": 114.99,
+                "price_additional_info": null,
+                "price_amount_breakdown": {
+                    "parts": [
+                        {
+                            "amount": 114.99,
+                            "commissionable": true,
+                            "debitable_from_customer": true,
+                            "payable_to_shop": true
+                        }
+                    ]
+                },
+                "price_unit": 114.99,
+                "product_medias": [
+                    {
+                        "media_url": "/media/product/image/4386a4ad-73bd-4932-b212-2b3de6a4d27a",
+                        "mime_type": "JPG",
+                        "type": "LARGE"
+                    },
+                    {
+                        "media_url": "/media/product/image/6c801cd3-0485-4a12-abbb-2200f70ca2d2",
+                        "mime_type": "JPG",
+                        "type": "SMALL"
+                    },
+                    {
+                        "media_url": "/media/product/image/fbe12a00-eb6b-44fb-af1d-6a672ff9b7c0",
+                        "mime_type": "JPG",
+                        "type": "MEDIUM"
+                    }
+                ],
+                "product_shop_sku": null,
+                "product_sku": "19435077",
+                "product_title": "Refurbished (Excellent), HP Chromebook 11 G8, Perfect for School, 11.6\" HD IPS, 4GB RAM, 32GB eMMC, WiFi/Bluetooth, Webcam/Mic, 45W Type-C Charger, 20L Backpack, Google Support",
+                "promotions": [],
+                "quantity": 1,
+                "received_date": null,
+                "refunds": [],
+                "shipped_date": null,
+                "shipping_from": {
+                    "address": {
+                        "city": "North York",
+                        "country_iso_code": "CAN",
+                        "state": "ON",
+                        "street_1": "133 Rock Feen Way",
+                        "street_2": null,
+                        "zip_code": "M2J 4N3"
+                    },
+                    "warehouse": {
+                        "code": "0001"
+                    }
+                },
+                "shipping_price": 0.0,
+                "shipping_price_additional_unit": null,
+                "shipping_price_amount_breakdown": {
+                    "parts": [
+                        {
+                            "amount": 0.0,
+                            "commissionable": true,
+                            "debitable_from_customer": true,
+                            "payable_to_shop": true
+                        }
+                    ]
+                },
+                "shipping_price_unit": null,
+                "shipping_taxes": [
+                    {
+                        "amount": 0.0,
+                        "amount_breakdown": {
+                            "parts": [
+                                {
+                                    "amount": 0.0,
+                                    "commissionable": false,
+                                    "debitable_from_customer": true,
+                                    "payable_to_shop": true
+                                }
+                            ]
+                        },
+                        "code": "GST",
+                        "tax_calculation_rule": "NONE"
+                    },
+                    {
+                        "amount": 0.0,
+                        "amount_breakdown": {
+                            "parts": [
+                                {
+                                    "amount": 0.0,
+                                    "commissionable": false,
+                                    "debitable_from_customer": true,
+                                    "payable_to_shop": true
+                                }
+                            ]
+                        },
+                        "code": "HST",
+                        "tax_calculation_rule": "NONE"
+                    }
+                ],
+                "taxes": [
+                    {
+                        "amount": 0.0,
+                        "amount_breakdown": {
+                            "parts": [
+                                {
+                                    "amount": 0.0,
+                                    "commissionable": false,
+                                    "debitable_from_customer": true,
+                                    "payable_to_shop": true
+                                }
+                            ]
+                        },
+                        "code": "GST",
+                        "tax_calculation_rule": "NONE"
+                    },
+                    {
+                        "amount": 14.95,
+                        "amount_breakdown": {
+                            "parts": [
+                                {
+                                    "amount": 14.95,
+                                    "commissionable": false,
+                                    "debitable_from_customer": true,
+                                    "payable_to_shop": true
+                                }
+                            ]
+                        },
+                        "code": "HST",
+                        "tax_calculation_rule": "NONE"
+                    }
+                ],
+                "total_commission": 10.4,
+                "total_price": 114.99
+            }
+        ],
+        "order_refunds": null,
+        "order_state": "SHIPPING",
+        "order_state_reason_code": null,
+        "order_state_reason_label": null,
+        "order_tax_mode": "TAX_EXCLUDED",
+        "order_taxes": null,
+        "paymentType": "",
+        "payment_type": "",
+        "payment_workflow": "PAY_ON_ACCEPTANCE",
+        "price": 114.99,
+        "promotions": {
+            "applied_promotions": [],
+            "total_deduced_amount": 0
+        },
+        "quote_id": null,
+        "references": {
+            "order_reference_for_customer": "ON"
+        },
+        "shipping_carrier_code": null,
+        "shipping_carrier_standard_code": null,
+        "shipping_company": null,
+        "shipping_deadline": "2025-09-06T06:59:59.999Z",
+        "shipping_price": 0.0,
+        "shipping_pudo_id": null,
+        "shipping_tracking": null,
+        "shipping_tracking_url": null,
+        "shipping_type_code": "M",
+        "shipping_type_label": "Ground Regular",
+        "shipping_type_standard_code": "CU_ADD-STD",
+        "shipping_zone_code": "ONLocal",
+        "shipping_zone_label": "Ontario Local",
+        "total_commission": 10.4,
+        "total_price": 114.99
+    }
+]

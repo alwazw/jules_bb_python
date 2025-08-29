@@ -1,0 +1,34 @@
+[
+    {
+        "order_id": "261250893-A",
+        "tracking_pin": "4017968244424861",
+        "label_url": "https://soa-gw.canadapost.ca/rs/artifact/2f66522e8666ee94/10626840079/0",
+        "void_url": "https://soa-gw.canadapost.ca/rs/0004017968/0004017968/shipment/189721756491887709",
+        "timestamp": "2025-08-29T18:24:48.830244",
+        "api_response": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<shipment-info xmlns=\"http://www.canadapost.ca/ws/shipment-v8\"><shipment-id>189721756491887709</shipment-id><shipment-status>transmitted</shipment-status><tracking-pin>4017968244424861</tracking-pin><po-number>P344547877</po-number><links><link rel=\"self\" href=\"https://soa-gw.canadapost.ca/rs/0004017968/0004017968/shipment/189721756491887709\" media-type=\"application/vnd.cpc.shipment-v8+xml\"/><link rel=\"details\" href=\"https://soa-gw.canadapost.ca/rs/0004017968/0004017968/shipment/189721756491887709/details\" media-type=\"application/vnd.cpc.shipment-v8+xml\"/><link rel=\"price\" href=\"https://soa-gw.canadapost.ca/rs/0004017968/0004017968/shipment/189721756491887709/price\" media-type=\"application/vnd.cpc.shipment-v8+xml\"/><link rel=\"refund\" href=\"https://soa-gw.canadapost.ca/rs/0004017968/0004017968/shipment/189721756491887709/refund\" media-type=\"application/vnd.cpc.shipment-v8+xml\"/><link rel=\"label\" href=\"https://soa-gw.canadapost.ca/rs/artifact/2f66522e8666ee94/10626840079/0\" media-type=\"application/pdf\" index=\"0\"/></links></shipment-info>"
+    },
+    {
+        "order_id": "261252961-A",
+        "tracking_pin": "4017968244591860",
+        "label_url": "https://soa-gw.canadapost.ca/rs/artifact/2f66522e8666ee94/10626840306/0",
+        "void_url": "https://soa-gw.canadapost.ca/rs/0004017968/0004017968/shipment/189721756491921004",
+        "timestamp": "2025-08-29T18:25:22.236941",
+        "api_response": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<shipment-info xmlns=\"http://www.canadapost.ca/ws/shipment-v8\"><shipment-id>189721756491921004</shipment-id><shipment-status>transmitted</shipment-status><tracking-pin>4017968244591860</tracking-pin><po-number>P344548299</po-number><links><link rel=\"self\" href=\"https://soa-gw.canadapost.ca/rs/0004017968/0004017968/shipment/189721756491921004\" media-type=\"application/vnd.cpc.shipment-v8+xml\"/><link rel=\"details\" href=\"https://soa-gw.canadapost.ca/rs/0004017968/0004017968/shipment/189721756491921004/details\" media-type=\"application/vnd.cpc.shipment-v8+xml\"/><link rel=\"price\" href=\"https://soa-gw.canadapost.ca/rs/0004017968/0004017968/shipment/189721756491921004/price\" media-type=\"application/vnd.cpc.shipment-v8+xml\"/><link rel=\"refund\" href=\"https://soa-gw.canadapost.ca/rs/0004017968/0004017968/shipment/189721756491921004/refund\" media-type=\"application/vnd.cpc.shipment-v8+xml\"/><link rel=\"label\" href=\"https://soa-gw.canadapost.ca/rs/artifact/2f66522e8666ee94/10626840306/0\" media-type=\"application/pdf\" index=\"0\"/></links></shipment-info>"
+    },
+    {
+        "order_id": "261258772-A",
+        "tracking_pin": "4017968244595868",
+        "label_url": "https://soa-gw.canadapost.ca/rs/artifact/2f66522e8666ee94/10626840359/0",
+        "void_url": "https://soa-gw.canadapost.ca/rs/0004017968/0004017968/shipment/189721756491953825",
+        "timestamp": "2025-08-29T18:25:54.100384",
+        "api_response": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<shipment-info xmlns=\"http://www.canadapost.ca/ws/shipment-v8\"><shipment-id>189721756491953825</shipment-id><shipment-status>transmitted</shipment-status><tracking-pin>4017968244595868</tracking-pin><po-number>P344548314</po-number><links><link rel=\"self\" href=\"https://soa-gw.canadapost.ca/rs/0004017968/0004017968/shipment/189721756491953825\" media-type=\"application/vnd.cpc.shipment-v8+xml\"/><link rel=\"details\" href=\"https://soa-gw.canadapost.ca/rs/0004017968/0004017968/shipment/189721756491953825/details\" media-type=\"application/vnd.cpc.shipment-v8+xml\"/><link rel=\"price\" href=\"https://soa-gw.canadapost.ca/rs/0004017968/0004017968/shipment/189721756491953825/price\" media-type=\"application/vnd.cpc.shipment-v8+xml\"/><link rel=\"refund\" href=\"https://soa-gw.canadapost.ca/rs/0004017968/0004017968/shipment/189721756491953825/refund\" media-type=\"application/vnd.cpc.shipment-v8+xml\"/><link rel=\"label\" href=\"https://soa-gw.canadapost.ca/rs/artifact/2f66522e8666ee94/10626840359/0\" media-type=\"application/pdf\" index=\"0\"/></links></shipment-info>"
+    },
+    {
+        "order_id": "261260643-A",
+        "tracking_pin": "4017968244680861",
+        "label_url": "https://soa-gw.canadapost.ca/rs/artifact/2f66522e8666ee94/10626840459/0",
+        "void_url": "https://soa-gw.canadapost.ca/rs/0004017968/0004017968/shipment/840121756491985079",
+        "timestamp": "2025-08-29T18:26:26.074481",
+        "api_response": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<shipment-info xmlns=\"http://www.canadapost.ca/ws/shipment-v8\"><shipment-id>840121756491985079</shipment-id><shipment-status>transmitted</shipment-status><tracking-pin>4017968244680861</tracking-pin><po-number>P344548114</po-number><links><link rel=\"self\" href=\"https://soa-gw.canadapost.ca/rs/0004017968/0004017968/shipment/840121756491985079\" media-type=\"application/vnd.cpc.shipment-v8+xml\"/><link rel=\"details\" href=\"https://soa-gw.canadapost.ca/rs/0004017968/0004017968/shipment/840121756491985079/details\" media-type=\"application/vnd.cpc.shipment-v8+xml\"/><link rel=\"price\" href=\"https://soa-gw.canadapost.ca/rs/0004017968/0004017968/shipment/840121756491985079/price\" media-type=\"application/vnd.cpc.shipment-v8+xml\"/><link rel=\"refund\" href=\"https://soa-gw.canadapost.ca/rs/0004017968/0004017968/shipment/840121756491985079/refund\" media-type=\"application/vnd.cpc.shipment-v8+xml\"/><link rel=\"label\" href=\"https://soa-gw.canadapost.ca/rs/artifact/2f66522e8666ee94/10626840459/0\" media-type=\"application/pdf\" index=\"0\"/></links></shipment-info>"
+    }
+]

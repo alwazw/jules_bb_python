@@ -11,18 +11,20 @@ project_root = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(project_root, '..', '..', '..'))
 from common.utils import get_canada_post_credentials
 from .validate_cp_shipment import get_shipment_details, get_tracking_summary
+from .pdf_utils import watermark_pdf
 
 # --- Configuration ---
 LOGS_DIR_BB = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'logs', 'best_buy')
 LOGS_DIR_CP = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'logs', 'canada_post')
 XML_INPUT_DIR = os.path.join(LOGS_DIR_CP, 'create_label_xml_files')
 PDF_OUTPUT_DIR = os.path.join(LOGS_DIR_CP, 'cp_pdf_shipping_labels')
+VOIDED_PDF_DIR = os.path.join(PDF_OUTPUT_DIR, 'voided')
 CP_SHIPPING_DATA_FILE = os.path.join(LOGS_DIR_CP, 'cp_shipping_labels_data.json')
 CP_HISTORY_LOG_FILE = os.path.join(LOGS_DIR_CP, 'cp_shipping_history_log.json')
 CUSTOMER_SERVICE_CP_HISTORY_LOG_FILE = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'logs', 'customer_service', 'cp_shipping_history_log.json')
 
 
-def log_shipping_data(order_id, tracking_pin, label_url, api_response_text):
+def log_shipping_data(order_id, tracking_pin, label_url, void_url, api_response_text):
     """ Logs the shipping data to cp_shipping_labels_data.json. """
     os.makedirs(os.path.dirname(CP_SHIPPING_DATA_FILE), exist_ok=True)
     print(f"INFO: Logging shipping data for order {order_id}...")
@@ -38,6 +40,7 @@ def log_shipping_data(order_id, tracking_pin, label_url, api_response_text):
         "order_id": order_id,
         "tracking_pin": tracking_pin,
         "label_url": label_url,
+        "void_url": void_url,
         "timestamp": datetime.now().isoformat(),
         "api_response": api_response_text
     })
@@ -91,25 +94,27 @@ def create_shipment_and_get_label(api_user, api_password, customer_number, xml_c
         response_text = response.text
         print("SUCCESS: 'Create Shipment' API call was successful.")
         
-        label_url, details_url, tracking_pin = None, None, None
+        label_url, details_url, tracking_pin, void_url = None, None, None, None
         try:
             root = ET.fromstring(response_text)
-            label_link = root.find(".//{http://www.canadapost.ca/ws/shipment-v8}link[@rel='label']")
-            if label_link is not None:
-                label_url = label_link.get('href')
+            links = root.findall(".//{http://www.canadapost.ca/ws/shipment-v8}link")
+            for link in links:
+                if link.get('rel') == 'label':
+                    label_url = link.get('href')
+                elif link.get('rel') == 'details':
+                    details_url = link.get('href')
+                elif link.get('rel') == 'self':
+                    void_url = link.get('href')
+
 
             tracking_pin_element = root.find(".//{http://www.canadapost.ca/ws/shipment-v8}tracking-pin")
             if tracking_pin_element is not None:
                 tracking_pin = tracking_pin_element.text
 
-            details_link = root.find(".//{http://www.canadapost.ca/ws/shipment-v8}link[@rel='details']")
-            if details_link is not None:
-                details_url = details_link.get('href')
-
         except ET.ParseError as e:
             print(f"ERROR: Failed to parse 'Create Shipment' response XML: {e}")
 
-        log_shipping_data(order_id, tracking_pin, label_url, response_text)
+        log_shipping_data(order_id, tracking_pin, label_url, void_url, response_text)
 
         return label_url, details_url, tracking_pin
 
@@ -117,7 +122,7 @@ def create_shipment_and_get_label(api_user, api_password, customer_number, xml_c
         print(f"ERROR: 'Create Shipment' API request failed: {e}")
         if e.response is not None:
             print("Response Body:", e.response.text)
-            log_shipping_data(order_id, None, None, e.response.text)
+            log_shipping_data(order_id, None, None, None, e.response.text)
         return None, None, None
 
 def download_label(label_url, api_user, api_password, output_path):
@@ -146,9 +151,9 @@ def download_label(label_url, api_user, api_password, output_path):
     except requests.exceptions.RequestException as e:
         print(f"ERROR: Failed to download label: {e}")
 
-def main():
-    """ Main function to process XML files and get PDF labels. """
-    print("\n--- Starting Create PDF Labels Script ---")
+def main(order_id, order):
+    """ Main function to process an XML file for a single order and get a PDF label. """
+    print(f"\n--- Starting Create PDF Label for Order: {order_id} ---")
 
     os.makedirs(PDF_OUTPUT_DIR, exist_ok=True)
 
@@ -156,59 +161,90 @@ def main():
     if not all([api_user, api_password, customer_number]):
         return
 
-    if not os.path.exists(XML_INPUT_DIR) or not os.listdir(XML_INPUT_DIR):
-        print("INFO: No XML files found to process.")
+    xml_file = f"{order_id}.xml"
+    xml_path = os.path.join(XML_INPUT_DIR, xml_file)
+
+    if not os.path.exists(xml_path):
+        print(f"ERROR: XML file {xml_file} not found in {XML_INPUT_DIR}.")
         return
 
-    xml_files = [f for f in os.listdir(XML_INPUT_DIR) if f.endswith('.xml')]
+    print(f"\nINFO: Processing {xml_file} for order {order_id}...")
     
-    print(f"INFO: Found {len(xml_files)} XML files to process.")
+    with open(xml_path, 'r') as f:
+        xml_content = f.read()
 
-    orders_file_path = os.path.join(LOGS_DIR_BB, 'orders_pending_shipping.json')
-    if not os.path.exists(orders_file_path):
-        print(f"ERROR: {orders_file_path} not found.")
-        return
+    label_url, details_url, tracking_pin = create_shipment_and_get_label(api_user, api_password, customer_number, xml_content, order)
 
-    with open(orders_file_path, 'r') as f:
-        all_orders = json.load(f)
-    orders_map = {order['order_id']: order for order in all_orders}
+    if details_url:
+        shipment_details_xml = get_shipment_details(api_user, api_password, details_url)
+        if shipment_details_xml:
+            log_cp_history(shipment_details_xml)
 
-    for xml_file in xml_files:
-        order_id = os.path.splitext(xml_file)[0]
-        xml_path = os.path.join(XML_INPUT_DIR, xml_file)
-        details_url = None
+    if tracking_pin:
+        import time
+        print("INFO: Waiting for 30 seconds for tracking pin to become active...")
+        time.sleep(30)
+        is_valid_tracking = get_tracking_summary(api_user, api_password, tracking_pin)
+        if not is_valid_tracking:
+            print(f"CRITICAL WARNING: Tracking PIN for order {order_id} could not be validated in real-time. Proceeding with Best Buy update.")
 
-        print(f"\nINFO: Processing {xml_file} for order {order_id}...")
-        
-        with open(xml_path, 'r') as f:
-            xml_content = f.read()
+    if label_url:
+        pdf_path = os.path.join(PDF_OUTPUT_DIR, f"{order_id}.pdf")
+        download_label(label_url, api_user, api_password, pdf_path)
 
-        order_details = orders_map.get(order_id)
-        if not order_details:
-            print(f"WARNING: Could not find order details for {order_id}. Skipping.")
-            continue
+    print(f"--- Create PDF Label for Order: {order_id} Finished ---\n")
 
-        label_url, details_url, tracking_pin = create_shipment_and_get_label(api_user, api_password, customer_number, xml_content, order_details)
+def void_shipment(order_id, api_user, api_password):
+    """ Voids a shipment for a given order ID. """
+    print(f"INFO: Attempting to void shipment for order {order_id}...")
+    if not os.path.exists(CP_SHIPPING_DATA_FILE):
+        print(f"WARNING: Shipping data file not found. Cannot void shipment for order {order_id}.")
+        return False
 
-        if details_url:
-            shipment_details_xml = get_shipment_details(api_user, api_password, details_url)
-            if shipment_details_xml:
-                log_cp_history(shipment_details_xml)
+    with open(CP_SHIPPING_DATA_FILE, 'r') as f:
+        try:
+            log_entries = json.load(f)
+        except json.JSONDecodeError:
+            print("ERROR: cp_shipping_labels_data.json is corrupted.")
+            return False
 
-        if tracking_pin:
-            import time
-            print("INFO: Waiting for 30 seconds for tracking pin to become active...")
-            time.sleep(30)
-            is_valid_tracking = get_tracking_summary(api_user, api_password, tracking_pin)
-            if not is_valid_tracking:
-                print(f"CRITICAL WARNING: Tracking PIN for order {order_id} could not be validated in real-time. Proceeding with Best Buy update.")
+    shipment_to_void = None
+    for entry in reversed(log_entries):
+        if entry.get("order_id") == order_id and entry.get("void_url"):
+            shipment_to_void = entry
+            break
 
-        if label_url:
-            timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-            pdf_path = os.path.join(PDF_OUTPUT_DIR, f"{order_id}_{timestamp}.pdf")
-            download_label(label_url, api_user, api_password, pdf_path)
+    if not shipment_to_void:
+        print(f"INFO: No previous shipment with a void_url found for order {order_id}. Nothing to void.")
+        return True # Nothing to void is considered a success
 
-    print("--- Create PDF Labels Script Finished ---\n")
+    void_url = shipment_to_void['void_url']
+    auth_string = f"{api_user}:{api_password}"
+    auth_b64 = base64.b64encode(auth_string.encode('utf-8')).decode('utf-8')
+
+    headers = {
+        'Authorization': f'Basic {auth_b64}',
+        'Accept': 'application/vnd.cpc.shipment-v8+xml'
+    }
+
+    try:
+        response = requests.delete(void_url, headers=headers)
+        if response.status_code == 204:
+            print(f"SUCCESS: Shipment for order {order_id} has been voided.")
+
+            # Watermark the old PDF
+            pdf_path = os.path.join(PDF_OUTPUT_DIR, f"{order_id}.pdf")
+            watermark_pdf(pdf_path, VOIDED_PDF_DIR)
+
+            return True
+        else:
+            print(f"ERROR: Failed to void shipment for order {order_id}. Status: {response.status_code}, Body: {response.text}")
+            return False
+    except requests.exceptions.RequestException as e:
+        print(f"ERROR: API request to void shipment failed for order {order_id}: {e}")
+        return False
 
 if __name__ == '__main__':
-    main()
+    # This script is not meant to be run directly anymore.
+    # It should be called from main_shipping.py
+    print("This script is designed to be imported and used by other parts of the application.")

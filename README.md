@@ -1,25 +1,27 @@
 # Best Buy Marketplace - Python Order Automation
 
-This project provides a command-line based Python application to automate the acceptance of orders and creation of shipping labels from the Best Buy Marketplace.
+This project provides a command-line based Python application to automate the order fulfillment workflow for the Best Buy Marketplace, from order acceptance to shipping.
 
 ## Project Status
-This project is currently under development and is being actively worked on to fix bugs and complete the implementation of the features described below.
+The core order management and shipping workflow is complete and stable. The project is now moving into the development of a new Customer Service module.
 
-## Project Phases
+## Core Workflow
 
-This project is broken down into four distinct phases, each with its own main orchestrator script:
+The application is designed to be run as a series of scripts, orchestrated by `main_scheduler.py` for full automation. The workflow consists of three main parts:
 
-1.  **Phase 1: Order Acceptance (`main_acceptance.py`)** - Fetches and accepts new orders from Best Buy.
-2.  **Phase 2: Retrieve for Shipping (`retrieve_pending_shipping.py`)** - Gets orders that are ready for shipment. This is not a standalone phase, but part of the shipping workflow.
-3.  **Phase 3: Create Shipping Labels (`main_shipping.py`)** - Generates XML payloads and creates Canada Post shipping labels.
-4.  **Phase 4: Update Tracking Numbers (`main_tracking.py`)** - Updates Best Buy with the new tracking numbers.
+1.  **Order Acceptance (`main_acceptance.py`)**: Fetches and accepts new orders from the Best Buy API.
+2.  **Shipping Label Creation (`main_shipping.py`)**:
+    *   Retrieves orders that are ready for shipment.
+    *   For each order, it voids any previously created labels to prevent duplicates.
+    *   It then creates a new, valid Canada Post shipping label and saves it as a PDF.
+3.  **Tracking Update (`main_tracking.py`)**: Updates the order on Best Buy with the new tracking number and marks it as shipped.
 
 ## 🚀 Getting Started
 
 ### 1. Prerequisites
 
 *   Python 3.6+
-*   `requests` library
+*   A virtual environment is recommended.
 
 ### 2. Installation
 
@@ -31,23 +33,27 @@ This project is broken down into four distinct phases, each with its own main or
     *   On Windows: `.\venv\Scripts\activate`
 
 3.  **Install dependencies:**
-    *   `pip install requests`
+    *   `pip install -r requirements.txt`
 
 4.  **Add your API Keys:**
-    *   Open `secrets.txt` and add your Best Buy and Canada Post credentials.
-    *   **IMPORTANT:** In `shipping/canada_post/cp_shipping/cp_pdf_labels.py`, you must replace `"YOUR_CUSTOMER_NUMBER"` with your actual Canada Post customer number.
+    *   Create a file named `secrets.txt` in the root directory and add your Best Buy and Canada Post credentials in the format specified in `common/utils.py`.
 
 ### 3. Running the Application
 
-Run each phase in order using the main orchestrator scripts:
+You can run each phase of the workflow manually using the main orchestrator scripts:
 
 ```bash
-# Phase 1: Accept new orders
+# 1. Accept new orders
 python3 main_acceptance.py
 
-# Phase 3: Create shipping labels
+# 2. Create shipping labels
 python3 main_shipping.py
 
-# Phase 4: Update tracking info on Best Buy
+# 3. Update tracking info on Best Buy
 python3 main_tracking.py
+```
+
+For continuous, automated operation, you can run the master scheduler:
+```bash
+python3 main_scheduler.py
 ```
