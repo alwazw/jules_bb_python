@@ -15,6 +15,13 @@ This project is broken down into five distinct phases, each with its own main or
 4.  **Phase 4: Update Tracking Numbers (`main_tracking.py`)** - Updates Best Buy with the new tracking numbers.
 5.  **Phase 5: Customer Service (`main_customer_service.py`)** - Fetches and aggregates customer messages from Best Buy.
 
+## Fulfillment Service
+
+In addition to the core automation scripts, this project now includes a **Fulfillment Service**, a standalone Flask application designed to guide technicians through the physical assembly and labeling process. This service helps prevent assembly errors and shipping mix-ups.
+
+For detailed information on the service, its API, and how to run it, please see the dedicated documentation:
+[**Fulfillment Service README**](./fulfillment_service/README.md)
+
 ## 🚀 Getting Started
 
 ### 1. Prerequisites
