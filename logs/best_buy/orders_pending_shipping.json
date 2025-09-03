@@ -1,0 +1,24 @@
+[
+    {
+        "order_id": "TEST-ORDER-123",
+        "order_date": "2025-09-03T12:00:00Z",
+        "customer": {
+            "firstname": "Testy",
+            "lastname": "McTestFace",
+            "shipping_address": {
+                "street_1": "123 Test Street",
+                "city": "Testville",
+                "state": "ON",
+                "zip_code": "M5V 2T6",
+                "country": "CA"
+            }
+        },
+        "order_lines": [
+            {
+                "order_line_id": "OL-1",
+                "offer_sku": "TEST-SKU-001",
+                "quantity": 1
+            }
+        ]
+    }
+]

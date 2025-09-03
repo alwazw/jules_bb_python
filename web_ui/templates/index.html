@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fulfillment Dashboard</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; background-color: #f4f4f9; }
+        .container { max-width: 1200px; margin: 20px auto; padding: 20px; }
+        header { background-color: #333; color: white; padding: 1rem; text-align: center; }
+        h1, h2 { color: #333; }
+        .dashboard { display: flex; gap: 20px; }
+        .work-orders-list { flex: 1; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .work-order-details { flex: 2; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .work-order-item { border-bottom: 1px solid #eee; padding: 10px; cursor: pointer; }
+        .work-order-item:hover { background-color: #f0f0f0; }
+        .work-order-item.selected { background-color: #e0e7ff; }
+        #details-content { margin-top: 20px; }
+        .scanner-section { margin-top: 20px; }
+        .scanner-section input { width: 80%; padding: 8px; }
+        .scanner-section button { padding: 8px 12px; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Fulfillment Dashboard</h1>
+    </header>
+    <div class="container">
+        <div class="dashboard">
+            <div class="work-orders-list">
+                <h2>Pending Work Orders</h2>
+                <div id="work-orders">
+                    {% for order in work_orders %}
+                        <div class="work-order-item" data-id="{{ order.work_order_id }}">
+                            <strong>{{ order.work_order_id }}</strong><br>
+                            <small>{{ order.customer_name }} - Status: {{ order.status }}</small>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="work-order-details">
+                <h2>Details & Verification</h2>
+                <div id="details-content">
+                    <p>Select a work order to see details.</p>
+                </div>
+                <div class="scanner-section">
+                    <h3>Barcode Scanner</h3>
+                    <input type="text" id="barcode-input" placeholder="Scan product barcode...">
+                    <button onclick="verifyScan()">Verify</button>
+                    <p id="scan-status"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedWorkOrderId = null;
+
+        document.querySelectorAll('.work-order-item').forEach(item => {
+            item.addEventListener('click', event => {
+                // Remove 'selected' from previously selected item
+                const previouslySelected = document.querySelector('.work-order-item.selected');
+                if (previouslySelected) {
+                    previouslySelected.classList.remove('selected');
+                }
+                // Add 'selected' to clicked item
+                item.classList.add('selected');
+
+                selectedWorkOrderId = item.getAttribute('data-id');
+                fetchWorkOrderDetails(selectedWorkOrderId);
+            });
+        });
+
+        function fetchWorkOrderDetails(workOrderId) {
+            const detailsContent = document.getElementById('details-content');
+            detailsContent.innerHTML = '<p>Loading...</p>';
+            fetch(`/api/work_order/${workOrderId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        detailsContent.innerHTML = `<p>Error: ${data.error}</p>`;
+                        return;
+                    }
+                    let itemsHtml = '<ul>';
+                    data.items.forEach(item => {
+                        itemsHtml += `<li>${item.quantity}x ${item.name} (SKU: ${item.sku})</li>`;
+                    });
+                    itemsHtml += '</ul>';
+                    detailsContent.innerHTML = `
+                        <h3>${data.work_order_id}</h3>
+                        <p><strong>Customer:</strong> ${data.customer_name}</p>
+                        <p><strong>Status:</strong> ${data.status}</p>
+                        <h4>Items:</h4>
+                        ${itemsHtml}
+                    `;
+                })
+                .catch(error => {
+                    detailsContent.innerHTML = `<p>Error loading details.</p>`;
+                    console.error('Error:', error);
+                });
+        }
+
+        function verifyScan() {
+            const barcode = document.getElementById('barcode-input').value;
+            const statusEl = document.getElementById('scan-status');
+            if (!selectedWorkOrderId) {
+                statusEl.textContent = 'Please select a work order first.';
+                statusEl.style.color = 'red';
+                return;
+            }
+            if (!barcode) {
+                statusEl.textContent = 'Please enter a barcode.';
+                statusEl.style.color = 'red';
+                return;
+            }
+
+            statusEl.textContent = 'Verifying...';
+            statusEl.style.color = 'black';
+
+            fetch('/api/verify_scan', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    work_order_id: selectedWorkOrderId,
+                    scanned_barcode: barcode
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    statusEl.textContent = data.message;
+                    statusEl.style.color = 'green';
+                } else {
+                    statusEl.textContent = `Error: ${data.message}`;
+                    statusEl.style.color = 'red';
+                }
+                document.getElementById('barcode-input').value = '';
+            })
+            .catch(error => {
+                statusEl.textContent = 'An error occurred.';
+                statusEl.style.color = 'red';
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>

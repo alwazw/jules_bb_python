@@ -1,0 +1,82 @@
+[
+    {
+        "message_id": "a4e1d66f-0498-470a-8d2c-3f8fb8cee7d1",
+        "thread_id": "ad31a90d-df77-4f3d-a1ce-987651690303",
+        "order_id": "261030203-A",
+        "customer_id": "N/A",
+        "subject": "Escalation Other seller question. - PO 261030203 - CU 1024429372",
+        "message": "Hi Victori,<br /><br />Your package was return to us with an invalid delivery address.<br />Can you please confirm if the address on file is correct.<br />I can also offer to ship to alternative address if you prefer.<br /><br />Spilchuk Victori<br />18 Ontario St<br />P7B3E9 Thunder Bay<br />ON<br />Canada<br />Phone 1: 807-356-2620",
+        "timestamp": "2025-08-27T21:19:15.314Z",
+        "status": "UNREAD"
+    },
+    {
+        "message_id": "bb839605-879c-4831-a8e8-3b2ce1b34812",
+        "thread_id": "0354856c-cc95-4f0a-a779-eadae6f64d7f",
+        "order_id": "261047886-A",
+        "customer_id": "N/A",
+        "subject": "Other seller question.",
+        "message": "Bonjour,\n\nJe vous informe que la commande en question je ne l'ai pas recu a ce jour.\nEn plus ma fille commencera les cours le mercredredi et il doit avoir son ordinateur avec elle.\n\nMerci de faire le necessaire ou trouver une solution alternative\n\nTaoufik GHAMRAOUI",
+        "timestamp": "2025-08-25T14:27:43.131Z",
+        "status": "UNREAD"
+    },
+    {
+        "message_id": "ab9590ad-ee49-4822-99fa-5689498d5886",
+        "thread_id": "77d81c7f-96a0-44b0-9923-f526fc945572",
+        "order_id": "261234584-A",
+        "customer_id": "N/A",
+        "subject": "Order not received.",
+        "message": "My order status indicates shipping label was created, but canada post has not picked up. What is the delay?",
+        "timestamp": "2025-09-03T18:16:57.842Z",
+        "status": "UNREAD"
+    },
+    {
+        "message_id": "35f92680-edc2-453c-93bd-8cf51488588b",
+        "thread_id": "426bf9a6-c215-4c84-9000-80091784c9ce",
+        "order_id": "261067893-A",
+        "customer_id": "N/A",
+        "subject": "Question about delivery",
+        "message": "Hi Mike,<br />I know you previously placed an order and we didn't have an issues with the delivery. This package was return to us with an \"invalid delivery address\".<br />Can you please confirm if the address on file is correct.<br />I can also offer to ship to alternative address if you prefer.<br /><br />Morneau Mike<br />4 - 4380 South Service Rd.<br />L7L5Y6 Burlington<br />ON<br />Canada<br />Phone 1: 647-669-7271",
+        "timestamp": "2025-08-27T21:15:07.537Z",
+        "status": "UNREAD"
+    },
+    {
+        "message_id": "2773d1a7-a2ad-4cbd-b35c-3eddf514e3a5",
+        "thread_id": "3ed9e84c-b33a-4f56-a7d2-0a2525d74c13",
+        "order_id": "261024748-A",
+        "customer_id": "N/A",
+        "subject": "Order not received.",
+        "message": "Hi There,\n\nOrder #1024424704\n\nMy order was not received.  I received an email from Canada Post stating my package would be delivered on August 20, 2025.  I have received nothing to date. The tracking update keeps stating it will be arriving on the next business day.  I sent an email to Canada Post advising them it was not delivered on the 20th, as previously confirmed.  They replied stating they will continue to monitor.\nHow will you resolve this issue?",
+        "timestamp": "2025-08-25T17:18:32.715Z",
+        "status": "UNREAD"
+    },
+    {
+        "message_id": "43fb888a-3c12-4c68-a6d9-c3ac1044d7f4",
+        "thread_id": "16cff896-963d-4064-9b4f-c9e8e81bb3e7",
+        "order_id": "261156182-A",
+        "customer_id": "N/A",
+        "subject": "Escalation Order not received. - PO 261156182 - CU 1024560944",
+        "message": "Hi will I be able to get the laptop before Thursday.",
+        "timestamp": "2025-08-24T01:45:14.186Z",
+        "status": "UNREAD"
+    },
+    {
+        "message_id": "43bc916e-8080-42a1-afed-e67588498fd7",
+        "thread_id": "a228e4cc-9e3d-47ab-a155-1d29f26735a6",
+        "order_id": "261221057-A",
+        "customer_id": "N/A",
+        "subject": "Order not received.",
+        "message": "Hello Seller, This is a representative from the Best Buy Canada Help Centre. A customers has reached out to us regarding this order, which has not been shipped for an extended period.\n\nCould you please contact the customer directly to provide an update on the delivery status?\n\nThank you for your attention to this matter.",
+        "timestamp": "2025-09-03T14:06:35.941Z",
+        "status": "UNREAD"
+    },
+    {
+        "message_id": "9285be4a-15a0-4b9f-8d26-33e4084c4b16",
+        "thread_id": "9e2004dc-7959-46ad-b19f-e1c5bda954f7",
+        "order_id": "260941343-A",
+        "customer_id": "N/A",
+        "subject": "Question about delivery",
+        "message": "Hi Qiuyu,<br /><br />Your package was return to us with an invalid delivery address.<br />Can you please confirm if the address on file is correct.<br />I can also offer to ship to alternative address if you prefer.<br /><br />Zhu Qiuyu<br />212-66 Forest Manor Rd<br />M2J0B7 North York<br />ON<br />Canada<br />Phone 1: 437-431-1710",
+        "timestamp": "2025-08-27T21:26:11.501Z",
+        "status": "UNREAD"
+    }
+]

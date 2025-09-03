@@ -1,0 +1,3 @@
+# This file is intentionally left empty.
+# It is used to ensure that the 'core' directory is tracked by Git,
+# as Git does not track empty directories.

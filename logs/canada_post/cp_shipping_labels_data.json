@@ -1,0 +1,9 @@
+[
+    {
+        "order_id": "TEST-ORDER-123",
+        "tracking_pin": "4017968391451864",
+        "label_url": "https://soa-gw.canadapost.ca/rs/artifact/2f66522e8666ee94/10627670555/0",
+        "timestamp": "2025-09-03T20:03:56.663142",
+        "api_response": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<shipment-info xmlns=\"http://www.canadapost.ca/ws/shipment-v8\"><shipment-id>167441756929834742</shipment-id><shipment-status>transmitted</shipment-status><tracking-pin>4017968391451864</tracking-pin><po-number>P344873471</po-number><links><link rel=\"self\" href=\"https://soa-gw.canadapost.ca/rs/0004017968/0004017968/shipment/167441756929834742\" media-type=\"application/vnd.cpc.shipment-v8+xml\"/><link rel=\"details\" href=\"https://soa-gw.canadapost.ca/rs/0004017968/0004017968/shipment/167441756929834742/details\" media-type=\"application/vnd.cpc.shipment-v8+xml\"/><link rel=\"price\" href=\"https://soa-gw.canadapost.ca/rs/0004017968/0004017968/shipment/167441756929834742/price\" media-type=\"application/vnd.cpc.shipment-v8+xml\"/><link rel=\"refund\" href=\"https://soa-gw.canadapost.ca/rs/0004017968/0004017968/shipment/167441756929834742/refund\" media-type=\"application/vnd.cpc.shipment-v8+xml\"/><link rel=\"label\" href=\"https://soa-gw.canadapost.ca/rs/artifact/2f66522e8666ee94/10627670555/0\" media-type=\"application/pdf\" index=\"0\"/></links></shipment-info>"
+    }
+]
