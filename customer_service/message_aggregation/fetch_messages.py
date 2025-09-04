@@ -25,9 +25,8 @@ def get_new_messages(api_key):
 
     headers = {"Authorization": api_key}
 
-    # For testing, we'll fetch threads updated in the last 24 hours.
-    # A more robust implementation would store the timestamp of the last run.
-    updated_since = (datetime.utcnow() - timedelta(days=1)).isoformat() + "Z"
+    # Fetch threads updated in the last year to get a good sample size.
+    updated_since = (datetime.utcnow() - timedelta(days=365)).isoformat() + "Z"
 
     params = {
         "with_messages": "true",

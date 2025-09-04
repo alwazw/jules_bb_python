@@ -31,14 +31,13 @@ def get_tracking_summary(api_user, api_password, tracking_pin):
         response = requests.get(tracking_url, headers=headers)
         response.raise_for_status()
         print(f"SUCCESS: Tracking PIN {tracking_pin} is valid and recognized by Canada Post.")
-        print("Tracking Summary:", response.text)
-        return True
+        return response.text
     except requests.exceptions.RequestException as e:
         print(f"CRITICAL: Tracking PIN {tracking_pin} could not be validated.")
         print(f"ERROR: Tracking validation API request failed: {e}")
         if e.response is not None:
             print("Response Body:", e.response.text)
-        return False
+        return None
 
 def get_shipment_details(api_user, api_password, shipment_details_url):
     """ Calls the Get Shipment Details API to validate the shipment and returns the response. """

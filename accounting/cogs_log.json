@@ -1,14 +1,16 @@
 [
-  {
-    "timestamp": "2025-09-04T01:34:09.424932",
-    "sku": "SKU-INSTOCK",
-    "quantity": 1,
-    "cogs": 0
-  },
-  {
-    "timestamp": "2025-09-04T01:35:08.663511",
-    "sku": "SKU-INSTOCK",
-    "quantity": 1,
-    "cogs": 0
-  }
+    {
+        "timestamp": "2025-09-04T08:57:00.000Z",
+        "order_id": "ORDER-1",
+        "sku": "SKU-A",
+        "quantity": 1,
+        "cogs": 100
+    },
+    {
+        "timestamp": "2025-09-04T08:57:00.000Z",
+        "order_id": "ORDER-2",
+        "sku": "SKU-B",
+        "quantity": 1,
+        "cogs": 200
+    }
 ]

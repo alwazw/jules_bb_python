@@ -123,11 +123,14 @@ def finalize_fulfillment():
         return jsonify({"error": f"Label generation failed: {error}"}), 500
 
     # Decrement the stock for the fulfilled item
-    offer_sku = session['order'].get('order_lines', [{}])[0].get('offer_sku')
+    order_line = session['order'].get('order_lines', [{}])[0]
+    offer_sku = order_line.get('offer_sku')
+    quantity = order_line.get('quantity', 1)
+
     if offer_sku:
-        if inv.decrease_stock(offer_sku):
+        if inv.decrease_stock(offer_sku, quantity):
             # Record COGS only if stock was successfully decremented
-            accounting.record_cogs(offer_sku, 1)
+            accounting.record_cogs(order_id, offer_sku, quantity)
         else:
             # This is an edge case: stock was available when starting, but not when finalizing.
             # This could happen in a concurrent system.
