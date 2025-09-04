@@ -35,9 +35,8 @@ class TestLogic(unittest.TestCase):
         self.assertIsNone(result)
 
     # We will need to mock the data loading to properly test get_work_order_details
-    @patch('fulfillment_service.src.logic.inv_logic.get_stock_level')
     @patch('fulfillment_service.src.logic.load_json_file')
-    def test_get_work_order_details_success(self, mock_load_json, mock_get_stock_level):
+    def test_get_work_order_details_success(self, mock_load_json):
         """
         Test the successful retrieval of work order details.
         """
@@ -51,7 +50,6 @@ class TestLogic(unittest.TestCase):
         }]
         # The mock should return different values on subsequent calls
         mock_load_json.side_effect = [mock_orders, mock_products]
-        mock_get_stock_level.return_value = 10 # Mock that the item is in stock
 
         # Act
         work_order, error = logic.get_work_order_details("TEST-1")

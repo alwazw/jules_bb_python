@@ -1,6 +1,0 @@
-[
-    {
-        "timestamp": "2025-09-04T08:28:00.000Z",
-        "shipment_details": "<?xml version='1.0' encoding='UTF-8'?><shipment-info xmlns=\"http://www.canadapost.ca/ws/shipment-v8\"><shipment-id>1234567890</shipment-id><shipment-status>in-transit</shipment-status><tracking-pin>1234567890123456</tracking-pin><customer-ref-no>261221057-A</customer-ref-no></shipment-info>"
-    }
-]
