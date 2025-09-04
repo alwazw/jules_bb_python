@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Dashboard</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .container { max-width: 960px; margin: auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1em; }
+        .add-btn { padding: 10px 15px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Inventory Dashboard</h1>
+            <a href="{{ url_for('add_stock_route') }}" class="add-btn">Add Stock</a>
+        </div>
+
+        <h2>Total Inventory Value: ${{ "%.2f"|format(value) }}</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>SKU</th>
+                    <th>Quantity</th>
+                    <th>Restock Threshold</th>
+                    <th>Cost per Unit</th>
+                    <th>Total Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sku, data in inventory.items() %}
+                <tr>
+                    <td>{{ sku }}</td>
+                    <td>{{ data.quantity }}</td>
+                    <td>{{ data.threshold }}</td>
+                    <td>${{ "%.2f"|format(data.cost) }}</td>
+                    <td>${{ "%.2f"|format(data.quantity * data.cost) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

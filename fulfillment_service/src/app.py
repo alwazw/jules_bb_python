@@ -1,4 +1,12 @@
+import os
+import sys
 from flask import Flask, jsonify, request
+
+# Add project root to path to allow importing 'inventory'
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+
+from inventory import inventory as inv
+from accounting import cost as accounting
 from . import logic
 
 app = Flask(__name__)
@@ -114,6 +122,18 @@ def finalize_fulfillment():
     if error:
         return jsonify({"error": f"Label generation failed: {error}"}), 500
 
+    # Decrement the stock for the fulfilled item
+    offer_sku = session['order'].get('order_lines', [{}])[0].get('offer_sku')
+    if offer_sku:
+        if inv.decrease_stock(offer_sku):
+            # Record COGS only if stock was successfully decremented
+            accounting.record_cogs(offer_sku, 1)
+        else:
+            # This is an edge case: stock was available when starting, but not when finalizing.
+            # This could happen in a concurrent system.
+            # For now, we will log a warning and proceed with the fulfillment.
+            print(f"WARNING: Stock for SKU {offer_sku} could not be decremented. It might have been depleted during fulfillment.")
+
     # Clean up the session
     del fulfillment_sessions[order_id]
 
@@ -123,6 +143,33 @@ def finalize_fulfillment():
         "tracking_number": label_info['tracking_pin'],
         "label_path": label_info['pdf_path']
     }), 200
+
+@app.route('/api/inventory/status/<sku>', methods=['GET'])
+def get_inventory_status(sku):
+    """
+    Returns the stock status for a given SKU, which can be used by a customer service chatbot.
+    """
+    inventory_data = inv.load_inventory()
+    sku_data = inventory_data.get(sku)
+
+    if not sku_data:
+        return jsonify({"sku": sku, "status": "Not Found"}), 404
+
+    quantity = sku_data.get('quantity', 0)
+    threshold = sku_data.get('threshold', 0)
+    status = "Out of Stock"
+
+    if quantity > threshold:
+        status = "In Stock"
+    elif quantity > 0:
+        status = "Low Stock"
+
+    return jsonify({
+        "sku": sku,
+        "status": status,
+        "quantity": quantity
+    })
+
 
 if __name__ == '__main__':
     # This allows running the app directly for development and testing.

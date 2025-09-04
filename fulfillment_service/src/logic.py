@@ -15,6 +15,7 @@ PDF_OUTPUT_DIR = os.path.join(PROJECT_ROOT, 'logs', 'canada_post', 'cp_pdf_shipp
 import sys
 sys.path.insert(0, PROJECT_ROOT)
 from common.utils import get_canada_post_credentials
+from inventory import inventory as inv_logic
 from shipping.canada_post.cp_create_labels.cp_transform_shipping_data import create_xml_payload
 from shipping.canada_post.cp_shipping.cp_pdf_labels import create_shipment_and_get_label, download_label
 
@@ -49,6 +50,12 @@ def get_work_order_details(order_id):
         return None, f"Order ID '{order_id}' not found in pending shipments."
 
     offer_sku = order.get('order_lines', [{}])[0].get('offer_sku')
+
+    # Check inventory before proceeding
+    stock_level = inv_logic.get_stock_level(offer_sku)
+    if stock_level <= 0:
+        return None, f"Cannot start fulfillment for Order ID '{order_id}': SKU '{offer_sku}' is out of stock."
+
     product_variant = find_product_by_sku(products, offer_sku)
 
     if not product_variant:

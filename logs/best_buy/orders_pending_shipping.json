@@ -1,0 +1,26 @@
+[
+    {
+        "order_id": "TEST-1",
+        "order_lines": [
+            {
+                "offer_sku": "SKU-A"
+            }
+        ]
+    },
+    {
+        "order_id": "ORDER-1",
+        "order_lines": [
+            {
+                "offer_sku": "SKU-OUTOFSTOCK"
+            }
+        ]
+    },
+    {
+        "order_id": "ORDER-2",
+        "order_lines": [
+            {
+                "offer_sku": "SKU-INSTOCK"
+            }
+        ]
+    }
+]
