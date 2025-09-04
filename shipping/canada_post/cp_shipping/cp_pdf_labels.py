@@ -22,10 +22,20 @@ CP_HISTORY_LOG_FILE = os.path.join(LOGS_DIR_CP, 'cp_shipping_history_log.json')
 CUSTOMER_SERVICE_CP_HISTORY_LOG_FILE = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'logs', 'customer_service', 'cp_shipping_history_log.json')
 
 
-def log_shipping_data(order_id, tracking_pin, label_url, api_response_text):
+def log_shipping_data(order_id, tracking_pin=None, label_url=None, api_response_text=None, error=None):
     """ Logs the shipping data to cp_shipping_labels_data.json. """
     os.makedirs(os.path.dirname(CP_SHIPPING_DATA_FILE), exist_ok=True)
     print(f"INFO: Logging shipping data for order {order_id}...")
+
+    log_entry = {
+        "order_id": order_id,
+        "tracking_pin": tracking_pin,
+        "label_url": label_url,
+        "timestamp": datetime.now().isoformat(),
+        "api_response": api_response_text,
+        "error": str(error) if error else None
+    }
+
     log_entries = []
     if os.path.exists(CP_SHIPPING_DATA_FILE):
         with open(CP_SHIPPING_DATA_FILE, 'r') as f:
@@ -34,13 +44,7 @@ def log_shipping_data(order_id, tracking_pin, label_url, api_response_text):
             except json.JSONDecodeError:
                 print("WARNING: cp_shipping_labels_data.json is corrupted. Starting fresh.")
 
-    log_entries.append({
-        "order_id": order_id,
-        "tracking_pin": tracking_pin,
-        "label_url": label_url,
-        "timestamp": datetime.now().isoformat(),
-        "api_response": api_response_text
-    })
+    log_entries.append(log_entry)
 
     with open(CP_SHIPPING_DATA_FILE, 'w') as f:
         json.dump(log_entries, f, indent=4)
@@ -108,16 +112,17 @@ def create_shipment_and_get_label(api_user, api_password, customer_number, xml_c
 
         except ET.ParseError as e:
             print(f"ERROR: Failed to parse 'Create Shipment' response XML: {e}")
+            log_shipping_data(order_id, api_response_text=response_text, error=e)
+            return None, None, None
 
         log_shipping_data(order_id, tracking_pin, label_url, response_text)
-
         return label_url, details_url, tracking_pin
 
     except requests.exceptions.RequestException as e:
         print(f"ERROR: 'Create Shipment' API request failed: {e}")
-        if e.response is not None:
-            print("Response Body:", e.response.text)
-            log_shipping_data(order_id, None, None, e.response.text)
+        response_text = e.response.text if e.response else "No response from server."
+        print("Response Body:", response_text)
+        log_shipping_data(order_id, api_response_text=response_text, error=e)
         return None, None, None
 
 def download_label(label_url, api_user, api_password, output_path):
@@ -145,6 +150,8 @@ def download_label(label_url, api_user, api_password, output_path):
 
     except requests.exceptions.RequestException as e:
         print(f"ERROR: Failed to download label: {e}")
+        return False
+    return True
 
 def main():
     """ Main function to process XML files and get PDF labels. """
@@ -174,39 +181,44 @@ def main():
     orders_map = {order['order_id']: order for order in all_orders}
 
     for xml_file in xml_files:
-        order_id = os.path.splitext(xml_file)[0]
-        xml_path = os.path.join(XML_INPUT_DIR, xml_file)
-        details_url = None
+        try:
+            order_id = os.path.splitext(xml_file)[0]
+            xml_path = os.path.join(XML_INPUT_DIR, xml_file)
+            details_url = None
 
-        print(f"\nINFO: Processing {xml_file} for order {order_id}...")
-        
-        with open(xml_path, 'r') as f:
-            xml_content = f.read()
+            print(f"\nINFO: Processing {xml_file} for order {order_id}...")
 
-        order_details = orders_map.get(order_id)
-        if not order_details:
-            print(f"WARNING: Could not find order details for {order_id}. Skipping.")
-            continue
+            with open(xml_path, 'r') as f:
+                xml_content = f.read()
 
-        label_url, details_url, tracking_pin = create_shipment_and_get_label(api_user, api_password, customer_number, xml_content, order_details)
+            order_details = orders_map.get(order_id)
+            if not order_details:
+                print(f"WARNING: Could not find order details for {order_id}. Skipping.")
+                continue
 
-        if details_url:
-            shipment_details_xml = get_shipment_details(api_user, api_password, details_url)
-            if shipment_details_xml:
-                log_cp_history(shipment_details_xml)
+            label_url, details_url, tracking_pin = create_shipment_and_get_label(api_user, api_password, customer_number, xml_content, order_details)
 
-        if tracking_pin:
-            import time
-            print("INFO: Waiting for 30 seconds for tracking pin to become active...")
-            time.sleep(30)
-            is_valid_tracking = get_tracking_summary(api_user, api_password, tracking_pin)
-            if not is_valid_tracking:
-                print(f"CRITICAL WARNING: Tracking PIN for order {order_id} could not be validated in real-time. Proceeding with Best Buy update.")
+            if details_url:
+                shipment_details_xml = get_shipment_details(api_user, api_password, details_url)
+                if shipment_details_xml:
+                    log_cp_history(shipment_details_xml)
 
-        if label_url:
-            timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-            pdf_path = os.path.join(PDF_OUTPUT_DIR, f"{order_id}_{timestamp}.pdf")
-            download_label(label_url, api_user, api_password, pdf_path)
+            if tracking_pin:
+                import time
+                print("INFO: Waiting for 30 seconds for tracking pin to become active...")
+                time.sleep(30)
+                is_valid_tracking = get_tracking_summary(api_user, api_password, tracking_pin)
+                if not is_valid_tracking:
+                    print(f"CRITICAL WARNING: Tracking PIN for order {order_id} could not be validated in real-time. Proceeding with Best Buy update.")
+
+            if label_url:
+                timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+                pdf_path = os.path.join(PDF_OUTPUT_DIR, f"{order_id}_{timestamp}.pdf")
+                if not download_label(label_url, api_user, api_password, pdf_path):
+                    print(f"ERROR: Failed to download label for order {order_id}. See logs for details.")
+        except Exception as e:
+            print(f"CRITICAL: An unexpected error occurred while processing {xml_file}: {e}")
+            log_shipping_data(order_id, error=e)
 
     print("--- Create PDF Labels Script Finished ---\n")
 
