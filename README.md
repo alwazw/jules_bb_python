@@ -1,25 +1,32 @@
 # Best Buy Marketplace - Python Order Automation
 
-This project provides a command-line based Python application to automate the acceptance of orders and creation of shipping labels from the Best Buy Marketplace.
+This project provides a command-line based Python application to automate the order fulfillment workflow for the Best Buy Marketplace, including order acceptance, shipping label creation, and customer service message aggregation.
 
 ## Project Status
-This project is currently under development and is being actively worked on to fix bugs and complete the implementation of the features described below.
+This project has undergone a major refactoring to establish a modular and scalable architecture (V2). The new structure is in place, and development is focused on building out a new database-driven fulfillment process with a web-based GUI.
 
-## Project Phases
+## Project Architecture
 
-This project is broken down into four distinct phases, each with its own main orchestrator script:
+The project is now organized into a modular structure:
 
-1.  **Phase 1: Order Acceptance (`main_acceptance.py`)** - Fetches and accepts new orders from Best Buy.
-2.  **Phase 2: Retrieve for Shipping (`retrieve_pending_shipping.py`)** - Gets orders that are ready for shipment. This is not a standalone phase, but part of the shipping workflow.
-3.  **Phase 3: Create Shipping Labels (`main_shipping.py`)** - Generates XML payloads and creates Canada Post shipping labels.
-4.  **Phase 4: Update Tracking Numbers (`main_tracking.py`)** - Updates Best Buy with the new tracking numbers.
+-   `main.py`: The single entry point for the application. It starts the core scheduler.
+-   `core/`: This directory contains the central application logic.
+    -   `scheduler.py`: The master scheduler that orchestrates the execution of all modules in a timed loop.
+    -   `utils.py`: Shared utility functions, such as loading API credentials.
+-   `modules/`: This directory contains the business logic for each phase of the workflow.
+    -   `acceptance.py`: Handles fetching and accepting new orders.
+    -   `shipping.py`: Handles creating shipping labels.
+    -   `tracking.py`: Handles updating tracking information on the marketplace.
+    -   `customer_service.py`: Handles fetching customer service messages.
+-   `database/`: Contains the database schema (`schema.sql`) for the V2 implementation.
+-   `web_ui/`: Contains the Flask web application for the V2 Fulfillment Dashboard.
 
 ## 🚀 Getting Started
 
 ### 1. Prerequisites
 
 *   Python 3.6+
-*   `requests` library
+*   The `requests`, `SQLAlchemy`, `psycopg2-binary`, and `Flask` libraries.
 
 ### 2. Installation
 
@@ -31,23 +38,25 @@ This project is broken down into four distinct phases, each with its own main or
     *   On Windows: `.\venv\Scripts\activate`
 
 3.  **Install dependencies:**
-    *   `pip install requests`
+    *   `pip install -r requirements.txt` (Note: A `requirements.txt` file should be created).
 
 4.  **Add your API Keys:**
     *   Open `secrets.txt` and add your Best Buy and Canada Post credentials.
-    *   **IMPORTANT:** In `shipping/canada_post/cp_shipping/cp_pdf_labels.py`, you must replace `"YOUR_CUSTOMER_NUMBER"` with your actual Canada Post customer number.
 
 ### 3. Running the Application
 
-Run each phase in order using the main orchestrator scripts:
+To run the entire automated workflow, use the main entry point:
 
 ```bash
-# Phase 1: Accept new orders
-python3 main_acceptance.py
-
-# Phase 3: Create shipping labels
-python3 main_shipping.py
-
-# Phase 4: Update tracking info on Best Buy
-python3 main_tracking.py
+# This will start the master scheduler, which runs the full workflow every 15 minutes.
+python3 main.py
 ```
+
+For testing, you can run a single cycle of the scheduler:
+```bash
+python3 main.py --run-once
+```
+
+## V2 Development
+
+The next phase of development (V2) is focused on replacing the current file-based logging and state management with a robust PostgreSQL database and a web-based GUI for operators. The foundational files for this are already in place. See `docs/V2_Simulation_and_Findings.md` for more details on the target architecture.
