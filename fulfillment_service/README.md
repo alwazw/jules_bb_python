@@ -95,7 +95,7 @@ The service exposes the following RESTful API endpoints:
 
 *   **URL:** `/api/fulfillment/finalize`
 *   **Method:** `POST`
-*   **Description:** Verifies that all components have been scanned and triggers the generation of a shipping label.
+*   **Description:** Verifies that all components have been scanned and triggers the generation of a shipping label. It also updates the inventory and records the Cost of Goods Sold (COGS).
 *   **Request Body:**
     ```json
     {
@@ -112,3 +112,7 @@ The service exposes the following RESTful API endpoints:
     }
     ```
 *   **Error Responses:** `400` (not all components scanned), `404` (session not started), `500` (label generation failed).
+
+## Shipping Integration
+
+This service is integrated with the `shipping` module to generate shipping labels. When the `/api/fulfillment/finalize` endpoint is called, the service calls the `create_shipment_and_get_label` function from the `shipping.canada_post.cp_shipping.cp_pdf_labels` module. This function creates the shipping label with Canada Post and returns the tracking number and a URL to the PDF label. The fulfillment service then downloads the PDF label and saves it to the `logs/canada_post/cp_pdf_shipping_labels` directory.

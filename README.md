@@ -3,7 +3,7 @@
 This project provides a command-line based Python application to automate the acceptance of orders and creation of shipping labels from the Best Buy Marketplace.
 
 ## Project Status
-This project is currently under development and is being actively worked on to fix bugs and complete the implementation of the features described below.
+This project is under active development. The core order automation features are functional, and the shipping module has been enhanced for better robustness and logging.
 
 ## Project Phases
 
@@ -21,6 +21,11 @@ In addition to the core automation scripts, this project now includes a **Fulfil
 
 For detailed information on the service, its API, and how to run it, please see the dedicated documentation:
 [**Fulfillment Service README**](./fulfillment_service/README.md)
+
+## Shipping Module
+
+The shipping module has been enhanced for better error handling and logging. For detailed information on the shipping module, its components, and how to troubleshoot common issues, please see the dedicated documentation:
+[**Shipping Module README**](./shipping/README.md)
 
 ## 🚀 Getting Started
 
