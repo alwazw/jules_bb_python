@@ -1,12 +1,38 @@
-from flask import Flask, jsonify, request
+from flask import Flask, request, jsonify, render_template, redirect, url_for
 from . import logic
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 
-# In-memory storage for active fulfillment sessions.
-# In a real application, this would be a database or a more robust cache.
-# Key: order_id, Value: session data
+# In-memory storage for fulfillment sessions.
 fulfillment_sessions = {}
+
+@app.route('/')
+def index():
+    # For demonstration, redirect to a default order.
+    # In a real app, you might have a dashboard of orders.
+    return redirect(url_for('fulfillment_page', order_id='261305911-A'))
+
+@app.route('/fulfillment/<order_id>')
+def fulfillment_page(order_id):
+    """Render the fulfillment page for a given order."""
+    if order_id not in fulfillment_sessions:
+        work_order, error = logic.get_work_order_details(order_id)
+        if error:
+            return f"Error: {error}", 404
+
+        fulfillment_sessions[order_id] = {
+            "order": work_order['order'],
+            "required_components": work_order['required_components'],
+            "scanned_components": set()
+        }
+
+    session_data = fulfillment_sessions[order_id]
+    return render_template('fulfillment.html',
+                           order_id=order_id,
+                           order_data=session_data['order'],
+                           required_components=session_data['required_components'],
+                           scanned_components=list(session_data['scanned_components']))
 
 @app.route('/api/fulfillment/start', methods=['POST'])
 def start_fulfillment():
@@ -127,4 +153,4 @@ def finalize_fulfillment():
 if __name__ == '__main__':
     # This allows running the app directly for development and testing.
     # For production, a proper WSGI server like Gunicorn or uWSGI should be used.
-    app.run(debug=True, port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5001)
