@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# C extensions
+*.so
+
 # Distribution / packaging
 .Python
 build/
@@ -44,7 +47,6 @@ htmlcov/
 nosetests.xml
 coverage.xml
 *.cover
-*.py,cover
 .hypothesis/
 .pytest_cache/
 
@@ -81,8 +83,12 @@ ipython_config.py
 # pyenv
 .python-version
 
-# celery beat schedule file
+# PEP 582; __pypackages__
+__pypackages__/
+
+# Celery stuff
 celerybeat-schedule
+celerybeat.pid
 
 # SageMath parsed files
 *.sage.py
@@ -98,7 +104,7 @@ venv.bak/
 
 # Spyder project settings
 .spyderproject
-.spyderworkspace
+.spyproject
 
 # Rope project settings
 .ropeproject
@@ -117,5 +123,30 @@ dmypy.json
 # pytype
 .pytype/
 
-# Large files
+# VSCode
+.vscode/
+
+# Secrets, logs, and data files to ignore
+secrets.txt
+logs/
+*.json.bak
 accounting/transactions.json
+
+# Re-include specific json files that should be tracked
+!catalog/product_schema.json
+!catalog/products.json
+!customer_service/messages.json
+!customer_service/orders_shipped_and_validated.json
+!logs/best_buy/orders_pending_shipping.json
+!logs/best_buy/orders_shipped_and_validated.json
+!logs/best_buy/pending_acceptance.json
+!logs/canada_post/cp_shipping_history_log.json
+!logs/canada_post/cp_shipping_labels_data.json
+!logs/customer_service/cp_shipping_history_log.json
+!logs/customer_service/orders_shipped_and_validated.json
+!offers/offers.json
+!Orders/pending_acceptance/orders_pending_acceptance/pending_acceptance.json
+!Orders/shipped_orders/update_tracking_info/orders_shipped_and_validated.json
+!shipping/customer_service/cp_shipping_history_log.json
+!shipping/customer_service_logs/customer_service_shipping_log.json
+!shipping/shipping/canada_post/cp_shipping_history_log.json
