@@ -4,7 +4,7 @@ from datetime import datetime
 
 # --- Path Configuration ---
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-ORDERS_FILE = os.path.join(PROJECT_ROOT, 'logs', 'best_buy', 'orders_pending_shipping.json')
+ORDERS_FILE = os.path.join(PROJECT_ROOT, 'Orders', 'pending_acceptance', 'orders_pending_acceptance', 'pending_acceptance.json')
 PRODUCTS_FILE = os.path.join(PROJECT_ROOT, 'catalog', 'products.json')
 PDF_OUTPUT_DIR = os.path.join(PROJECT_ROOT, 'logs', 'canada_post', 'cp_pdf_shipping_labels')
 
